@@ -31,11 +31,7 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             throw new IllegalStateException("Email has been taken");
         }
-
-        if (userRepository.findUserByName(user.getName()) == null ) {
-            throw new IllegalStateException("UserName has been taken");
-        }
-
+        
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getEmail());
         user.setPassword(encodedPassword);

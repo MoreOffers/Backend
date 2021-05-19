@@ -41,15 +41,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
+                .antMatchers("/**")
                 .permitAll()
+                .anyRequest()
+                .authenticated().and()
+                .formLogin()
                 .and()
-                .logout()
-                .permitAll();
+                .logout();
+
     }
 
     @Bean
