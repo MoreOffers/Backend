@@ -39,16 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable();
 
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/css/**", "/js/**", "/registration").permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .httpBasic();
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/registration").permitAll()
+                .antMatchers("/css/**", "/js/**", "/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -59,7 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    // 响应OPTION request
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

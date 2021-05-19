@@ -58,11 +58,6 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("login")
-    public String testLogin() {
-        return "hello";
-    }
-
     @GetMapping
     public List<User> getUser() {
         return userService.getUsers();
