@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    //use Optional to prevent npe
     Optional<User> findUserByEmail(String email);
     User findUserByName(String name);
 }
