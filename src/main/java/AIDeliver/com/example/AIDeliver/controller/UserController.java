@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+//fds
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,11 +38,11 @@ public class UserController {
         SecurityContextHolder.clearContext();
 
         session = request.getSession(false);
-        if(session != null) {
+        if (session != null) {
             session.invalidate();
         }
 
-        for(Cookie cookie : request.getCookies()) {
+        for (Cookie cookie : request.getCookies()) {
             cookie.setMaxAge(0);
         }
 
@@ -68,16 +68,13 @@ public class UserController {
         userService.addNewUser(user);
     }
 
-    @DeleteMapping(path="{userId}")
+    @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
     }
 
     @PutMapping(path = "{userId}")
-    public void updateUser(
-            @PathVariable("userid") Long userId,
-            User user
-    ) {
+    public void updateUser(@PathVariable("userid") Long userId, User user) {
         userService.updateUser(user);
     }
 }
