@@ -12,9 +12,9 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column
+    @Column(name = "deliverer_id", nullable = false)
     private Long delivererId;
 
-    @Column
+    @Column(name = "station_address", nullable = false)
     private String stationAddress;
 }
