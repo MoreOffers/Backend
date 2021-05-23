@@ -31,13 +31,16 @@ public class Deliverer {
     @Column
     private String equip_id;
 
+    //add station
+    @ManyToOne
+    @Column
+    private Station station;
+
     /*
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
      */
-
 
     public String getCurPosition() {
 
@@ -56,8 +59,9 @@ public class Deliverer {
     public void setEquipId(String equip_id) {
         this.equip_id = equip_id;
     }
-    public void getEquipId(String equip_id) {
-        this.equip_id = equip_id;
+
+    public String getEquipId(String equip_id) {
+        return equip_id;
     }
 
     public void setPrice(double price) {
@@ -70,6 +74,10 @@ public class Deliverer {
 
     public String getType() {
         return type;
+    }
+
+    public Station getStation() {
+        return station;
     }
 
 
