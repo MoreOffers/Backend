@@ -31,10 +31,9 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequest request) {
+    public ResponseEntity<User> login(@RequestBody UserLoginRequest request) {
 
-        Boolean res = false;
-        ResponseEntity<String> response = new ResponseEntity<>(res.toString(), HttpStatus.FORBIDDEN);
+        ResponseEntity<User> response = new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
         try {
 
@@ -43,7 +42,7 @@ public class UserController {
 
             if (user != null ) {
                 Boolean matches =  encoder.matches(request.getPassword(), user.getPassword());
-                response = new ResponseEntity<>(matches.toString(), HttpStatus.OK);
+                response = new ResponseEntity<>(user, HttpStatus.OK);
             }
 
         } catch (Exception e) {

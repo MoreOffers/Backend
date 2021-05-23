@@ -33,8 +33,8 @@ public class User {
     @Column
     private String mobile;
 
-    @Column
-    private int credit;
+    @Column()
+    private double credit = 100.00;
 
     @Column
     private Date birthday;
