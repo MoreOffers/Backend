@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,18 +25,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    public void addNewUser(@RequestBody User user) {
-        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
-        if (userOptional.isPresent()) {
+    public Boolean addNewUser(@RequestBody User user) {
+
+        User curUser = userRepository.findUserByEmail(user.getEmail());
+        if (curUser != null) {
             throw new IllegalStateException("Email has been taken");
         }
         
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getEmail());
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
         userRepository.save(user);
-
+        return true;
     }
 
     public void deleteUser(Long studentId) {
@@ -53,14 +53,14 @@ public class UserServiceImpl implements UserService {
 
         User existinguser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new IllegalStateException(
-                        "Student with id " + user.getId() + " does not exist."
+                        "User with id " + user.getId() + " does not exist."
                 ));
 
         userRepository.save(user);
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) {
+    public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
 
