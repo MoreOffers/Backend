@@ -12,7 +12,7 @@ public interface DelivererService {
 
     String getCurPosition(String type, List<Station> stations, int senderZip, int receiverZip, String createTime, String curTime);
    // Optional<Deliverer> findDelivererByEquipId(String equip_id);
-    Optional<Deliverer> findDelivererByDelivererId(Long deliverer_id);
+    Optional<Deliverer> findDelivererById(Long deliverer_id);
 
 
 }
