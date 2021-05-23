@@ -22,7 +22,7 @@ public class DelivererServiceImpl implements DelivererService {
         this.delivererRepository = delivererRepository;
     }
 
-    public Optional<Deliverer> findDelivererByDelivererId(Long deliverer_id) {
+    public Optional<Deliverer> findDelivererById(Long deliverer_id) {
         return delivererRepository.findById(deliverer_id);
     }
 
