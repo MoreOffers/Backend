@@ -1,7 +1,6 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.enity.Deliverer;
-
 import AIDeliver.com.example.AIDeliver.enity.Station;
 import AIDeliver.com.example.AIDeliver.enity.Order;
 
@@ -44,11 +43,14 @@ public class DelivererController {
             int receiverZip = curOrder.getReceiverZipcode();
             String createTime = curOrder.getCreateTime().toString().substring(11,13);
 
-            Optional<Deliverer> curDeliverer = deliverService.findDelivererByDelivererId(deliver_id);
-            String type = curDeliverer.getType();
+            String type = "";
+            Optional<Deliverer> curDeliverer = delivererService.findDelivererByDelivererId(deliver_id);
+            if (curDeliverer. isPresent()) {
+                Deliverer myDeliverer = curDeliverer.get();
+                 type = myDeliverer.getType();
+            }
 
             String curTime = LocalTime.now().toString().substring(11,13);
-
 
             List<Station> stations = stationService.getAllStations();
 
