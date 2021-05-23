@@ -33,18 +33,19 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody UserLoginRequest request) {
 
-        ResponseEntity<User> response = null;
-
-        User user = userService.findUserByEmail(request.getEmail());
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        ResponseEntity<User> response = new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
         try {
+
+            User user = userService.findUserByEmail(request.getEmail());
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
             if (user != null &&
                     encoder.matches(request.getPassword(), user.getPassword())) {
-                response = new ResponseEntity<User>(user,HttpStatus.OK);
+                response = new ResponseEntity<>(user, HttpStatus.OK);
             }
 
-        } catch (AuthenticationException e) {
+        } catch (Exception e) {
             throw new ApiRequestException("Incorrect password or email", HttpStatus.FORBIDDEN);
         }
         return response;
