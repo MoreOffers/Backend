@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.Optional;
 
 @RestController
@@ -44,7 +43,7 @@ public class DelivererController {
             String createTime = curOrder.getCreateTime().toString().substring(11,13);
 
             String type = "";
-            Optional<Deliverer> curDeliverer = delivererService.findDelivererByDelivererId(deliver_id);
+            Optional<Deliverer> curDeliverer = delivererService.findDelivererById(deliver_id);
             if (curDeliverer. isPresent()) {
                 Deliverer myDeliverer = curDeliverer.get();
                  type = myDeliverer.getType();
