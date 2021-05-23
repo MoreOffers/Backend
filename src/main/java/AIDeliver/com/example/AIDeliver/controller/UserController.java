@@ -31,18 +31,19 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody UserLoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody UserLoginRequest request) {
 
-        ResponseEntity<User> response = new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        Boolean res = false;
+        ResponseEntity<String> response = new ResponseEntity<>(res.toString(), HttpStatus.FORBIDDEN);
 
         try {
 
             User user = userService.findUserByEmail(request.getEmail());
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-            if (user != null &&
-                    encoder.matches(request.getPassword(), user.getPassword())) {
-                response = new ResponseEntity<>(user, HttpStatus.OK);
+            if (user != null ) {
+                Boolean matches =  encoder.matches(request.getPassword(), user.getPassword());
+                response = new ResponseEntity<>(matches.toString(), HttpStatus.OK);
             }
 
         } catch (Exception e) {
