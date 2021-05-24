@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +34,8 @@ public class DelivererController {
 
         @GetMapping("/tracking")
         //public ResponseEntity<Object> trackingOrder(){
-        public ResponseEntity<Object> trackingOrder(@RequestParam(value = "order_number") String order_number) {
-
+       public ResponseEntity<Object> trackingOrder(@RequestParam(value = "order_number") String order_number) {
+            //need to test with order and station
             Order curOrder = orderService.findOrderByOrderNumber(orde_number);
             long deliver_id = curOrder.getDelivererId();
             int senderZip = curOrder.getSenderZipcode();
@@ -48,13 +48,12 @@ public class DelivererController {
                 Deliverer myDeliverer = curDeliverer.get();
                  type = myDeliverer.getType();
             }
-
             String curTime = LocalTime.now().toString().substring(11,13);
 
             List<Station> stations = stationService.getAllStations();
 
 
-            /*  test
+            /*test
             String type1 = "robot";
             Station one = new Station("stationA",95132);
 
@@ -73,13 +72,13 @@ public class DelivererController {
 
             String curPos =  delivererService.getCurPosition(type1, stations, sender, receiver, createTime, curTime);
             System.out.println(curPos);
-            */
+            //*/
 
+            //String curPos = null;
             String curPos =  delivererService.getCurPosition(type, stations, senderZip, receiverZip, createTime, curTime);
 
             return new ResponseEntity<>(curPos, HttpStatus.OK);
         }
-
 
 }
 
