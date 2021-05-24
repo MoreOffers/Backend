@@ -25,9 +25,9 @@ public class Station {
     public String getStationAddress() {
         return station_address;
     }
+//*/
 
-
-    /* test
+   /* test
     public String getAddress() {
         return address;
     }
@@ -51,7 +51,6 @@ public class Station {
         this.address = address;
         this.zipCode = zipCode;
     }
-     */
-
+   */
 
 }

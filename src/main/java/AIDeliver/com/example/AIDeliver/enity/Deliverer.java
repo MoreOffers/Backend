@@ -1,5 +1,5 @@
 package AIDeliver.com.example.AIDeliver.enity;
-
+import AIDeliver.com.example.AIDeliver.enity.Station;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -33,7 +33,6 @@ public class Deliverer {
 
     //add station
     @ManyToOne
-    @Column
     private Station station;
 
     /*
