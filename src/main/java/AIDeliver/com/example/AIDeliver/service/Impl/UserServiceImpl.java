@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         if (curUser != null) {
             throw new IllegalStateException("Email has been taken");
         }
-        
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -65,4 +65,3 @@ public class UserServiceImpl implements UserService {
     }
 
 }
-
