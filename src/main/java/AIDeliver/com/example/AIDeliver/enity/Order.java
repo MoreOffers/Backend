@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Table
 @Data
-public class SalesOrder {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

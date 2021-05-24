@@ -51,6 +51,6 @@ public class User {
     private Date updatedAt;
 
     @OneToMany(mappedBy = "user")
-    private List<SalesOrder> salesOrders;
+    private List<Order> orders;
 
 }
