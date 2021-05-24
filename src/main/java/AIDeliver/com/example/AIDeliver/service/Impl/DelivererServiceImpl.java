@@ -28,17 +28,6 @@ public class DelivererServiceImpl implements DelivererService {
     }
 
 
-    /* no need to use for now
-    public void addNewDeliverer(Deliverer deliverer) {
-        Optional<User> delivererOptional = delivererRepository.getDelivererByEquipId(deliverer.getEquipId());
-        if (delivererOptional.isPresent()) {
-            throw new IllegalStateException("Email has been taken");
-        }
-        deliverer.setEquipId
-    }
-     */
-
-
     public String tracking(List<Station> stations, int zipcode) {
         int min = Integer.MAX_VALUE;
         String address = "";
