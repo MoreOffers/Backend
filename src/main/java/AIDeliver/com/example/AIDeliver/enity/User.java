@@ -33,7 +33,7 @@ public class User {
     @Column
     private String mobile;
 
-    @Column()
+    @Column
     private double credit = 100.00;
 
     @Column

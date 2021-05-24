@@ -10,8 +10,10 @@ import java.util.List;
 @Service
 public interface UserService {
     List<User> getUsers();
+
     Boolean addNewUser(@RequestBody User user);
     void deleteUser(Long studentId);
     void updateUser(@RequestBody User user);
     User findUserByEmail(String email);
+
 }
