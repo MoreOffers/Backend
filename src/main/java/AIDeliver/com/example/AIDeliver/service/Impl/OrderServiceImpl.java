@@ -1,5 +1,6 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
+import AIDeliver.com.example.AIDeliver.common.util.OrderStatus;
 import AIDeliver.com.example.AIDeliver.enity.Order;
 import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.repository.OrderRepository;
