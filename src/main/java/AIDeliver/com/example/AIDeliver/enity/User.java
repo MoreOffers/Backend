@@ -5,9 +5,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table
+@Table(name = "user")
 @Data
 public class User {
 
@@ -48,5 +49,8 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<SalesOrder> salesOrders;
 
 }
