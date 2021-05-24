@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "salesOrder")
 
-public class SalesOrderController {
+public class OrderController {
 
     @Autowired
     private OrderService salesOrderService;
