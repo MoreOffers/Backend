@@ -19,7 +19,7 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    private OrderService salesOrderService;
+    private OrderService orderService;
 
     @Autowired
     private UserService userService;
@@ -32,7 +32,7 @@ public class OrderController {
 
 //            Boolean isSuccess = userService.addNewUser(user);
 
-        List<DeliveryOption> deliveryOptions = salesOrderService.calculatePrice(order);
+        List<DeliveryOption> deliveryOptions = orderService.calculatePrice(order);
         response = new ResponseEntity(deliveryOptions, HttpStatus.OK);
         return response;
     }
@@ -42,8 +42,8 @@ public class OrderController {
 
         ResponseEntity<Object> response = null;
 
-        salesOrderService.createSalesOrder(order, deliveryOption, user);
-        Boolean isSuccess = salesOrderService.createSalesOrder(order, deliveryOption, user);
+        orderService.createSalesOrder(order, deliveryOption, user);
+        Boolean isSuccess = orderService.createSalesOrder(order, deliveryOption, user);
         response = new ResponseEntity(order.getTrackingNumber(), HttpStatus.OK);
         return response;
 
