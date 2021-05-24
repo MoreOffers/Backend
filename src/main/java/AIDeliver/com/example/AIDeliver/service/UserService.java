@@ -15,4 +15,5 @@ public interface UserService {
     void deleteUser(Long studentId);
     void updateUser(@RequestBody User user);
     Optional<User> findUserByEmail(String email);
+
 }
