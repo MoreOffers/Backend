@@ -72,13 +72,13 @@ public class OrderServiceImpl implements OrderService {
 
     public List<DeliveryOption> calculatePrice(Order order) {
         //sender zipcode-receiver zip code
-        String key = order.getSenderZipCode() + order.getReceiverZipCode();
+        String key = order.getSenderZipCode() + "-" + order.getReceiverZipCode();
 
         ZipCode zipCode = new ZipCode();
-        Coordinate coordinate = new Coordinate(order.getSenderZipCode(), order.getReceiverZipCode());
+        //Coordinate coordinate = new Coordinate(order.getSenderZipCode(), order.getReceiverZipCode());
 
-        double paymentAmount1 = order.getWeight() * zipCode.calTable.get(coordinate) * 20; // 20 needs to be updated drone
-        double paymentAmount2 = order.getWeight() * zipCode.calTable.get(coordinate) * 10; // 10 needs to be updated robot
+        double paymentAmount1 = order.getWeight() * zipCode.calTable.get(key) * 20; // 20 needs to be updated drone
+        double paymentAmount2 = order.getWeight() * zipCode.calTable.get(key) * 10; // 10 needs to be updated robot
 
         List<DeliveryOption> list = new ArrayList<>();
         DeliveryOption drone = new DeliveryOption();
