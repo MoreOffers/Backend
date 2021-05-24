@@ -1,5 +1,6 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
+import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
 import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.enity.Station;
@@ -104,6 +105,15 @@ public String tracking(List<Station> stations, int zipcode) {
 
     }
 
+    @Override
+    public Double getRobotEstimatePrice(OrderInfoRequest orderInfoRequest) {
+        return 100.0;
+    }
+
+    @Override
+    public Double getDroneEstimatePrice(OrderInfoRequest orderInfoRequest) {
+        return 200.0;
+    }
 
 
 }

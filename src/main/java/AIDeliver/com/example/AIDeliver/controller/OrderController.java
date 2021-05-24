@@ -1,8 +1,11 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
-
+import AIDeliver.com.example.AIDeliver.common.util.Constant;
+import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
+import AIDeliver.com.example.AIDeliver.dto.response.Option;
 import AIDeliver.com.example.AIDeliver.enity.Order;
 import AIDeliver.com.example.AIDeliver.enity.User;
+import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.Impl.DeliveryOption;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
 import AIDeliver.com.example.AIDeliver.service.UserService;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,17 +28,30 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DelivererService delivererService;
 
-    @PostMapping(path = "/order/placeOrderQuote")
-    public ResponseEntity<Object> quote(@RequestBody Order order) {
+    @PostMapping(path = "/placeOrderQuote")
+    public ResponseEntity<List<Option>> quote(@RequestBody OrderInfoRequest orderInfoRequest) {
 
-        ResponseEntity<Object> response = null;
+        Double robotPrice = delivererService.getRobotEstimatePrice(orderInfoRequest);
+        Double dronePrice = delivererService.getDroneEstimatePrice(orderInfoRequest);
 
-//            Boolean isSuccess = userService.addNewUser(user);
+        List<Option> res = new ArrayList<>();
 
-        List<DeliveryOption> deliveryOptions = orderService.calculatePrice(order);
-        response = new ResponseEntity(deliveryOptions, HttpStatus.OK);
-        return response;
+        Option robotOpt = new Option();
+        robotOpt.setName(Constant.Robot);
+        robotOpt.setPrice(robotPrice);
+
+        Option droneOpt = new Option();
+        droneOpt.setName(Constant.Drone);
+        droneOpt.setPrice(dronePrice);
+
+        res.add(robotOpt);
+        res.add(droneOpt);
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
+
     }
 
     @PostMapping(path = "/order/placeOrderConfirm")
