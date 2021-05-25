@@ -1,13 +1,12 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
-import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.repository.OrderRepository;
 import AIDeliver.com.example.AIDeliver.repository.UserRepository;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
-import AIDeliver.com.example.AIDeliver.tools.Coordinate;
+import AIDeliver.com.example.AIDeliver.common.util.tools.Coordinate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

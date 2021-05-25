@@ -1,12 +1,8 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
-import AIDeliver.com.example.AIDeliver.tools.Coordinate;
-import org.springframework.data.util.Pair;
+import AIDeliver.com.example.AIDeliver.common.util.tools.Coordinate;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ZipCode {
 
