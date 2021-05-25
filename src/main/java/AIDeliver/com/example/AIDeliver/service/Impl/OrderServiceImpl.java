@@ -166,18 +166,12 @@ public class OrderServiceImpl implements OrderService {
 
 
 
-        Deliverer  deliverer;
-        deliverer = delivererRepository.findDelivererById(1L).get();
+        Deliverer  deliverer = new Deliverer();
+        deliverer.setType(delivererType);
 
         orders.setDeliverer(deliverer);
-//        userRepository.save(orderConfirmationRequest.getUser());
 
         User user = userRepository.findUserByEmail(orderConfirmationRequest.getUser().getEmail());
-
-//        if (user == null) {
-//            User newU
-//            userRepository.save(user);
-//        }
 
         orders.setSenderAddress(senderAddress);
         orders.setReceiverAddress(receiverAddress);

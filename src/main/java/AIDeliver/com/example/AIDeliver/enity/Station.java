@@ -23,3 +23,4 @@ public class Station {
     @JoinColumn(name ="station_id",referencedColumnName = "id", nullable = true)
     private List<Deliverer> deliverers;
 }
+
