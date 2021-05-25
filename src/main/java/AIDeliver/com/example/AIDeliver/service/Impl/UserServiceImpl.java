@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    public Boolean addNewUser(@RequestBody User user) {
+    public Boolean addNewUser(User user) {
 
         User curUser = userRepository.findUserByEmail(user.getEmail());
         if (curUser != null) {
@@ -49,12 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void updateUser(@RequestBody User user) {
+    public void save(User user) {
 
-        User existinguser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new IllegalStateException(
-                        "User with id " + user.getId() + " does not exist."
-                ));
+//        User existinguser = userRepository.findById(user.getId())
+//                .orElseThrow(() -> new IllegalStateException(
+//                        "User with id " + user.getId() + " does not exist."
+//                ));
 
         userRepository.save(user);
     }

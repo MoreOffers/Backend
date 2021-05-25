@@ -1,23 +1,22 @@
 package AIDeliver.com.example.AIDeliver.repository;
 
-import AIDeliver.com.example.AIDeliver.enity.Order;
-import AIDeliver.com.example.AIDeliver.enity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import AIDeliver.com.example.AIDeliver.enity.Orders;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 //import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findSalesOrdersByUserId(User userId);
+public interface OrderRepository extends CrudRepository<Orders, Long> {
 
-    Optional<Order> findSalesOrderById(Long salesOrderId);
+//    Orders createOrder(OrderInfoRequest orderInfo, Selected option, User user);
 
-    String findSalesOrderStatusById(Long salesOrderId);
-
-    List<Order> findSalesOrderByUserId(Long id);
+//    List<Orders> findSalesOrdersByUserId(User userId);
+//
+//    Optional<Orders> findSalesOrderById(Long salesOrderId);
+//
+//    String findSalesOrderStatusById(Long salesOrderId);
+//
+//    List<Orders> findSalesOrderByUserId(Long id);
 
 }

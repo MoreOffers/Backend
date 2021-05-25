@@ -3,7 +3,7 @@ package AIDeliver.com.example.AIDeliver.dto.response;
 import lombok.Data;
 
 @Data
-public class Option {
-    private String name;
+public class Selected {
+    private String option;
     private Double Price;
 }

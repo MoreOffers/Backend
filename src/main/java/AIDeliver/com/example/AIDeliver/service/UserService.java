@@ -11,9 +11,11 @@ import java.util.List;
 public interface UserService {
     List<User> getUsers();
 
-    Boolean addNewUser(@RequestBody User user);
+//    Boolean addNewUser(@RequestBody User user);
+    Boolean addNewUser(User user);
     void deleteUser(Long studentId);
-    void updateUser(@RequestBody User user);
+//    void updateUser(@RequestBody User user);
+    void save(User user);
     User findUserByEmail(String email);
 
 }

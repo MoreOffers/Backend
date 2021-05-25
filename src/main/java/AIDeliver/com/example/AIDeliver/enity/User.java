@@ -1,5 +1,6 @@
 package AIDeliver.com.example.AIDeliver.enity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -16,41 +17,43 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = true)
     private String name;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = true)
     private String password;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = true)
     private String email;
 
-    @Column
+    @Column(nullable = true)
     private String Address;
 
-    @Column
+    @Column(nullable = true)
     private String zipCode;
 
-    @Column
+    @Column(nullable = true)
     private String mobile;
 
     @Column
     private double credit = 100.00;
 
-    @Column
+    @Column(nullable = true)
     private Date birthday;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = true)
     private Date createdAt;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = true)
     private Date updatedAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
+    @JsonIgnore
+    @OneToMany(targetEntity = Orders.class,cascade = CascadeType.ALL)
+    @JoinColumn(name ="orders_id",referencedColumnName = "id", nullable = true)
+    private List<Orders> orders;
 
 }

@@ -1,20 +1,23 @@
 package AIDeliver.com.example.AIDeliver.enity;
-import AIDeliver.com.example.AIDeliver.enity.Station;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table
+@Table(name="DELIVERER")
 @Data
 public class Deliverer {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(columnDefinition = "long default 1")
     private long id;
 
     @Column(name = "type", nullable = false)
     private String type;
+
+//    @OneToOne
+//    @JoinColumn(name="orders_id", referencedColumnName = "id", nullable=true)
+//    private Orders orders;
 
     @Column
     private boolean equip_status;
@@ -32,8 +35,8 @@ public class Deliverer {
     private String equip_id;
 
     //add station
-    @ManyToOne
-    private Station station;
+//    @ManyToOne
+//    private Station station;
 
     /*
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -41,47 +44,6 @@ public class Deliverer {
     private User user;
      */
 
-    public String getCurPosition() {
-
-        return current_position;
-    }
-
-    public boolean getEquipStatus() {
-
-        return equip_status;
-    }
-
-    public int getMaxWeight() {
-        return max_weight;
-    }
-
-    public void setEquipId(String equip_id) {
-        this.equip_id = equip_id;
-    }
-
-    public String getEquipId(String equip_id) {
-        return equip_id;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public Station getStation() {
-        return station;
-    }
-
-    public void setStation(Station station) {
-        this.station = station;
-    }
 
 
 }

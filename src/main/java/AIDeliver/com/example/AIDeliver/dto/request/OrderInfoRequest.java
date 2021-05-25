@@ -12,5 +12,5 @@ public class OrderInfoRequest {
     private String to;
     private String weight;
     private String size;
-    private Date time;
+    private String time;
 }
