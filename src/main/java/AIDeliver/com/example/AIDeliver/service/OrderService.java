@@ -2,7 +2,10 @@ package AIDeliver.com.example.AIDeliver.service;
 
 
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
+import AIDeliver.com.example.AIDeliver.enity.Orders;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface OrderService {
@@ -12,5 +15,7 @@ public interface OrderService {
 //    void updateSalesOrderStatus(Long salesOrderId, String status);
 
     String createOrder(OrderConfirmationRequest orderConfirmationRequest);
+    List<Orders> getHistorySalesOrders(Long userId);
+
 //    void setSalesOrderStatus(String status);
 }

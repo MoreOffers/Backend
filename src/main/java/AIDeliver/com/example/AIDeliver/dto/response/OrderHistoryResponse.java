@@ -8,6 +8,6 @@ import java.util.Map;
 
 @Data
 public class OrderHistoryResponse {
-    private Map<String,List<Orders>> pendingOrders;
-    private Map<String,List<Orders>> completedOrders;
+    private Map<String,List<Orders>> pending;
+    private Map<String,List<Orders>> completed;
 }

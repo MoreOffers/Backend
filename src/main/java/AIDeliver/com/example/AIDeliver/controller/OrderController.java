@@ -2,6 +2,7 @@ package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.common.util.Constant;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
+import AIDeliver.com.example.AIDeliver.dto.request.OrderHistoryRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
 import AIDeliver.com.example.AIDeliver.dto.response.OrderHistoryResponse;
 import AIDeliver.com.example.AIDeliver.dto.response.Selected;
@@ -66,13 +67,14 @@ public class OrderController {
 
 
     @GetMapping("/historyOrder")
-    public ResponseEntity<OrderHistoryResponse> findAllOrders(@RequestBody String userEmail){
-        User user = userService.findUserByEmail(userEmail);
-        List<Orders> orders = userService.getHistorySalesOrders(user.getId());
+    public ResponseEntity<OrderHistoryResponse> findAllOrders(@RequestBody OrderHistoryRequest orderHistoryRequest){
+        String email = orderHistoryRequest.getEmail();
+        User user = userService.findUserByEmail(orderHistoryRequest.getEmail());
+        List<Orders> orders = orderService.getHistorySalesOrders(user.getId());
 
         OrderHistoryResponse orderHistoryResponse = new OrderHistoryResponse();
-        Map<String,List<Orders>> pendingOrders = orderHistoryResponse.getPendingOrders();
-        Map<String,List<Orders>> completedOrders = orderHistoryResponse.getCompletedOrders();
+        Map<String,List<Orders>> pendingOrders = new HashMap<>();
+        Map<String,List<Orders>> completedOrders = new HashMap<>();
 
         pendingOrders.put("pending", new ArrayList<>());
         completedOrders.put("completed", new ArrayList<>());
@@ -86,20 +88,11 @@ public class OrderController {
             }
         }
 
+        orderHistoryResponse.setPending(pendingOrders);
+        orderHistoryResponse.setCompleted(completedOrders);
+
         return new ResponseEntity<>(orderHistoryResponse, HttpStatus.OK);
-
     }
-
-
-//
-//    @GetMapping("/getInfo")
-//    public List<OrderResponse> getJoinInformation(){
-//        return customerRepository.getJoinInformation();
-//    }
-
-
-
-
 
 }
 

@@ -6,11 +6,11 @@ import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.repository.OrderRepository;
 import AIDeliver.com.example.AIDeliver.repository.UserRepository;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
-import AIDeliver.com.example.AIDeliver.common.util.tools.Coordinate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -138,6 +138,12 @@ public class OrderServiceImpl implements OrderService {
         saveOrder(orderConfirmationRequest, trackingNumber);
         return trackingNumber;
     }
+
+    @Override
+    public List<Orders> getHistorySalesOrders(Long userId) {
+        return orderRepository.findSalesOrderByUserId(userId);
+    }
+
 
     private void saveOrder(OrderConfirmationRequest orderConfirmationRequest, String trackingNumber) {
         Orders orders = new Orders();

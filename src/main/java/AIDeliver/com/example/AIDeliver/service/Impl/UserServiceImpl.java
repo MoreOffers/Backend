@@ -62,9 +62,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(email);
     }
 
-    @Override
-    public List<Orders> getHistorySalesOrders(Long userId) {
-        return orderRepository.findSalesOrderByUserId(userId);
-    }
-
 }

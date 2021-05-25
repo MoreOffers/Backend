@@ -52,7 +52,7 @@ public class User {
     private Date updatedAt;
 
     @JsonIgnore
-    @OneToMany(targetEntity = Orders.class,cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Orders.class, cascade = CascadeType.ALL)
     @JoinColumn(name ="orders_id",referencedColumnName = "id", nullable = true)
     private List<Orders> orders;
 
