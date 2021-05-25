@@ -96,7 +96,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/user/tracking")
+    @GetMapping( value = { "/user/tracking","tracking" })
     public ResponseEntity<OrderTrackingResponse> OrderTracking (@RequestBody OrderTrackingRequest orderTrackingRequest){
         String trackingNumber = orderTrackingRequest.getTrackingNumber();
         OrderTrackingResponse orderTrackingResponse = new OrderTrackingResponse();
