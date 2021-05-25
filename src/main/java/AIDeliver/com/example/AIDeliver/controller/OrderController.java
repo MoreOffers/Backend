@@ -3,8 +3,10 @@ package AIDeliver.com.example.AIDeliver.controller;
 import AIDeliver.com.example.AIDeliver.common.util.Constant;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
+import AIDeliver.com.example.AIDeliver.dto.response.OrderHistoryResponse;
 import AIDeliver.com.example.AIDeliver.dto.response.Selected;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
+import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
 import AIDeliver.com.example.AIDeliver.service.UserService;
@@ -14,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "order")
@@ -61,10 +65,30 @@ public class OrderController {
     }
 
 
-//    @GetMapping("/historyOrder")
-//    public ResponseEntity<List<Orders>> findAllOrders(){
-//        return userService.findAll();
-//    }
+    @GetMapping("/historyOrder")
+    public ResponseEntity<OrderHistoryResponse> findAllOrders(@RequestBody String userEmail){
+        User user = userService.findUserByEmail(userEmail);
+        List<Orders> orders = userService.getHistorySalesOrders(user.getId());
+
+        OrderHistoryResponse orderHistoryResponse = new OrderHistoryResponse();
+        Map<String,List<Orders>> pendingOrders = orderHistoryResponse.getPendingOrders();
+        Map<String,List<Orders>> completedOrders = orderHistoryResponse.getCompletedOrders();
+
+        pendingOrders.put("pending", new ArrayList<>());
+        completedOrders.put("completed", new ArrayList<>());
+
+        for (Orders order : orders) {
+            String status = order.getOrderStatus();
+            if (status == "pending") {
+                pendingOrders.get("pending").add(order);
+            } else {
+                completedOrders.get("completed").add(order);
+            }
+        }
+
+        return new ResponseEntity<>(orderHistoryResponse, HttpStatus.OK);
+
+    }
 
 
 //

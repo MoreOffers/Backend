@@ -1,6 +1,8 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
+import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.enity.User;
+import AIDeliver.com.example.AIDeliver.repository.OrderRepository;
 import AIDeliver.com.example.AIDeliver.repository.UserRepository;
 import AIDeliver.com.example.AIDeliver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository) {
         this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
     }
 
     public List<User> getUsers() {
@@ -50,18 +54,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void save(User user) {
-
-//        User existinguser = userRepository.findById(user.getId())
-//                .orElseThrow(() -> new IllegalStateException(
-//                        "User with id " + user.getId() + " does not exist."
-//                ));
-
         userRepository.save(user);
     }
 
     @Override
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public List<Orders> getHistorySalesOrders(Long userId) {
+        return orderRepository.findSalesOrderByUserId(userId);
     }
 
 }

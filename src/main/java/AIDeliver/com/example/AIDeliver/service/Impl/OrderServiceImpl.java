@@ -11,8 +11,7 @@ import AIDeliver.com.example.AIDeliver.tools.Coordinate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.UUID;
 
 @Service
@@ -142,24 +141,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void saveOrder(OrderConfirmationRequest orderConfirmationRequest, String trackingNumber) {
-        /*
-        * orderConfirmationRequest:
-        * private OrderInfoRequest orderInfo;
-        * private Selected option;
-        * private User user;
-        *
-        * */
-
-        /*
-        *
-        * private String from;
-        * private String to;
-        * private String weight;
-        * private String size;
-        * private Date time;
-        *
-        * */
-
         Orders orders = new Orders();
         String senderAddress = orderConfirmationRequest.getOrderInfo().getFrom();
         String receiverAddress = orderConfirmationRequest.getOrderInfo().getTo();
@@ -188,16 +169,8 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orders);
     }
 
-
-
     private String generateTrackingNumber() {
-//        byte[] array = new byte[16];
-//        new Random().nextBytes(array);
-//        String trackingNumber = new String(array, Charset.forName("UTF-8"));
-//        return trackingNumber;
-
-        return UUID.randomUUID().toString();
-
+        return UUID.randomUUID().toString().substring(0, 15);
     }
 
 }
