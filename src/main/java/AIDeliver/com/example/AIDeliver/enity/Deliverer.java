@@ -30,7 +30,7 @@ public class Deliverer {
     @Column(name = "current_position", nullable = true)
     private String current_position;
 
-    @Column(name = "equip_id", nullable = true)
+    @Column(name = "equip_number", nullable = true)
     private String equip_id;
 
     //add station

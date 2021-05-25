@@ -34,7 +34,7 @@ public class DelivererServiceImpl implements DelivererService {
         for(Station station: stations) {
             int close = Math.abs(station.getZipcode() - zipcode);
             if (close < min) {
-                address = station.getStationAddress();
+                address = station.getStation_address();
                 min = close;
             }
         }
