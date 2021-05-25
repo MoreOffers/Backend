@@ -4,8 +4,11 @@ import AIDeliver.com.example.AIDeliver.common.util.Constant;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderHistoryRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
+import AIDeliver.com.example.AIDeliver.dto.request.OrderTrackingRequest;
 import AIDeliver.com.example.AIDeliver.dto.response.OrderHistoryResponse;
+import AIDeliver.com.example.AIDeliver.dto.response.OrderTrackingResponse;
 import AIDeliver.com.example.AIDeliver.dto.response.Selected;
+import AIDeliver.com.example.AIDeliver.dto.response.StationStatus;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
@@ -16,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -88,6 +93,42 @@ public class OrderController {
         orderHistoryResponse.setCompleted(completedOrders);
 
         return new ResponseEntity<>(orderHistoryResponse, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/user/tracking")
+    public ResponseEntity<OrderTrackingResponse> OrderTracking (@RequestBody OrderTrackingRequest orderTrackingRequest){
+        String trackingNumber = orderTrackingRequest.getTrackingNumber();
+        OrderTrackingResponse orderTrackingResponse = new OrderTrackingResponse();
+        Map<String, StationStatus> delivererPath = new HashMap<>();
+
+        Date date = new Date();
+
+        StationStatus stationStatus1 = new StationStatus();
+        stationStatus1.setStatus("departed");
+        stationStatus1.setDate(date);
+        delivererPath.put("station1", stationStatus1);
+
+        StationStatus stationStatus2 = new StationStatus();
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+
+        stationStatus1.setDate(date);
+        delivererPath.put("station2", stationStatus1);
+
+        c.setTime(date);
+        c.add(Calendar.DATE, 1);
+        date = c.getTime();
+
+        StationStatus stationStatus3 = new StationStatus();
+        stationStatus1.setDate(date);
+        delivererPath.put("station3", stationStatus1);
+
+        orderTrackingResponse.setDelivererPath(delivererPath);
+        return new ResponseEntity(orderTrackingResponse, HttpStatus.OK);
     }
 
 }
