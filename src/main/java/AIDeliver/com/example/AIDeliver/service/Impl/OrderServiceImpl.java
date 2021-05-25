@@ -1,17 +1,16 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
+import AIDeliver.com.example.AIDeliver.common.util.OrderStatus;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
-import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.repository.OrderRepository;
 import AIDeliver.com.example.AIDeliver.repository.UserRepository;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
-import AIDeliver.com.example.AIDeliver.tools.Coordinate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -140,25 +139,16 @@ public class OrderServiceImpl implements OrderService {
         return trackingNumber;
     }
 
+    private String generateTrackingNumber() {
+        return UUID.randomUUID().toString().substring(0, 15);
+    }
+
+    @Override
+    public List<Orders> getHistorySalesOrders(Long userId) {
+        return orderRepository.findSalesOrderByUserId(userId);
+    }
+
     private void saveOrder(OrderConfirmationRequest orderConfirmationRequest, String trackingNumber) {
-        /*
-         * orderConfirmationRequest:
-         * private OrderInfoRequest orderInfo;
-         * private Selected option;
-         * private User user;
-         *
-         * */
-
-        /*
-         *
-         * private String from;
-         * private String to;
-         * private String weight;
-         * private String size;
-         * private Date time;
-         *
-         * */
-
         Orders orders = new Orders();
         String senderAddress = orderConfirmationRequest.getOrderInfo().getFrom();
         String receiverAddress = orderConfirmationRequest.getOrderInfo().getTo();
@@ -184,35 +174,34 @@ public class OrderServiceImpl implements OrderService {
         orders.setSize(size);
         orders.setPaymentAmount(price);
         orders.setUser(user);
+        orders.setTrackingNumber(trackingNumber);
+
+        orders.setOrderStatus(OrderStatus.PENDING.name());
         orderRepository.save(orders);
     }
 
-    private String generateTrackingNumber() {
-        return UUID.randomUUID().toString();
 
-    }
 
-    public void updateSalesOrderStatus(Long salesOrderId, String status) {
-
-        Orders existingOrder = orderRepository.findById(salesOrderId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "order with id " + salesOrderId + " does not exist."
-                ));
-        existingOrder.setOrderStatus(status);
-        orderRepository.save(existingOrder);
-    }
-
-    public List<DeliveryOption> calculatePrice(Orders orders) {
-        //sender zipcode-receiver zip code
-        String key = orders.getSenderZipCode() + "-" + orders.getReceiverZipCode();
-
-        ZipCode zipCode = new ZipCode();
-        //Coordinate coordinate = new Coordinate(order.getSenderZipCode(), order.getReceiverZipCode());
-
-        double paymentAmount1 = orders.getWeight() * zipCode.calTable.get(key) * 20; // 20 needs to be updated drone
-        double paymentAmount2 = orders.getWeight() * zipCode.calTable.get(key) * 10; // 10 needs to be updated robot
-
-        return null;
-
-    }
+//    public void updateSalesOrderStatus(Long salesOrderId, String status) {
+//
+//        Orders existingOrder = orderRepository.findById(salesOrderId)
+//                .orElseThrow(() -> new IllegalStateException(
+//                        "order with id " + salesOrderId + " does not exist."
+//                ));
+//        existingOrder.setOrderStatus(status);
+//        orderRepository.save(existingOrder);
+//    }
+//
+//    public List<DeliveryOption> calculatePrice(Orders orders) {
+//        //sender zipcode-receiver zip code
+//        String key = orders.getSenderZipCode() + "-" + orders.getReceiverZipCode();
+//
+//        ZipCode zipCode = new ZipCode();
+//        //Coordinate coordinate = new Coordinate(order.getSenderZipCode(), order.getReceiverZipCode());
+//
+//        double paymentAmount1 = orders.getWeight() * zipCode.calTable.get(key) * 20; // 20 needs to be updated drone
+//        double paymentAmount2 = orders.getWeight() * zipCode.calTable.get(key) * 10; // 10 needs to be updated robot
+//
+//        return null;
+//    }
 }

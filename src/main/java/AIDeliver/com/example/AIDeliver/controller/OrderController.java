@@ -2,9 +2,12 @@ package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.common.util.Constant;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
+import AIDeliver.com.example.AIDeliver.dto.request.OrderHistoryRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
+import AIDeliver.com.example.AIDeliver.dto.response.OrderHistoryResponse;
 import AIDeliver.com.example.AIDeliver.dto.response.Selected;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
+import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
 import AIDeliver.com.example.AIDeliver.service.UserService;
@@ -13,8 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "order")
@@ -61,21 +63,32 @@ public class OrderController {
     }
 
 
-//    @GetMapping("/historyOrder")
-//    public ResponseEntity<List<Orders>> findAllOrders(){
-//        return userService.findAll();
-//    }
+    @GetMapping("/historyOrder")
+    public ResponseEntity<OrderHistoryResponse> findAllOrders(@RequestBody OrderHistoryRequest orderHistoryRequest){
+        User user = userService.findUserByEmail(orderHistoryRequest.getEmail());
+        List<Orders> orders = orderService.getHistorySalesOrders(user.getId());
 
+        OrderHistoryResponse orderHistoryResponse = new OrderHistoryResponse();
+        Map<String,List<Orders>> pendingOrders = new HashMap<>();
+        Map<String,List<Orders>> completedOrders = new HashMap<>();
 
-//
-//    @GetMapping("/getInfo")
-//    public List<OrderResponse> getJoinInformation(){
-//        return customerRepository.getJoinInformation();
-//    }
+        pendingOrders.put("pending", new ArrayList<>());
+        completedOrders.put("completed", new ArrayList<>());
 
+        for (Orders order : orders) {
+            String status = order.getOrderStatus();
+            if (status.toLowerCase() != "completed") {
+                pendingOrders.get("pending").add(order);
+            } else {
+                completedOrders.get("pending").add(order);
+            }
+        }
 
+        orderHistoryResponse.setPending(pendingOrders);
+        orderHistoryResponse.setCompleted(completedOrders);
 
-
+        return new ResponseEntity<>(orderHistoryResponse, HttpStatus.OK);
+    }
 
 }
 
