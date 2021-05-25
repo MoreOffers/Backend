@@ -70,7 +70,6 @@ public class OrderServiceImpl implements OrderService {
 //    }
 
 
-
 //    public Boolean createSalesOrder(Orders order, DeliveryOption deliveryOption, User user) {
 //        //order.delivererId = delivererId
 //        Optional<Orders> salesOrderOptional = orderRepository.findSalesOrderById(order.getId());
@@ -143,22 +142,22 @@ public class OrderServiceImpl implements OrderService {
 
     private void saveOrder(OrderConfirmationRequest orderConfirmationRequest, String trackingNumber) {
         /*
-        * orderConfirmationRequest:
-        * private OrderInfoRequest orderInfo;
-        * private Selected option;
-        * private User user;
-        *
-        * */
+         * orderConfirmationRequest:
+         * private OrderInfoRequest orderInfo;
+         * private Selected option;
+         * private User user;
+         *
+         * */
 
         /*
-        *
-        * private String from;
-        * private String to;
-        * private String weight;
-        * private String size;
-        * private Date time;
-        *
-        * */
+         *
+         * private String from;
+         * private String to;
+         * private String weight;
+         * private String size;
+         * private Date time;
+         *
+         * */
 
         Orders orders = new Orders();
         String senderAddress = orderConfirmationRequest.getOrderInfo().getFrom();
@@ -188,16 +187,32 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orders);
     }
 
-
-
     private String generateTrackingNumber() {
-//        byte[] array = new byte[16];
-//        new Random().nextBytes(array);
-//        String trackingNumber = new String(array, Charset.forName("UTF-8"));
-//        return trackingNumber;
-
         return UUID.randomUUID().toString();
 
     }
 
+    public void updateSalesOrderStatus(Long salesOrderId, String status) {
+
+        Orders existingOrder = orderRepository.findById(salesOrderId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "order with id " + salesOrderId + " does not exist."
+                ));
+        existingOrder.setOrderStatus(status);
+        orderRepository.save(existingOrder);
+    }
+
+    public List<DeliveryOption> calculatePrice(Orders orders) {
+        //sender zipcode-receiver zip code
+        String key = orders.getSenderZipCode() + "-" + orders.getReceiverZipCode();
+
+        ZipCode zipCode = new ZipCode();
+        //Coordinate coordinate = new Coordinate(order.getSenderZipCode(), order.getReceiverZipCode());
+
+        double paymentAmount1 = orders.getWeight() * zipCode.calTable.get(key) * 20; // 20 needs to be updated drone
+        double paymentAmount2 = orders.getWeight() * zipCode.calTable.get(key) * 10; // 10 needs to be updated robot
+
+        return null;
+
+    }
 }
