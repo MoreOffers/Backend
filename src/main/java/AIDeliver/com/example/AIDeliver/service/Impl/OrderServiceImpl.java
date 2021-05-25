@@ -2,8 +2,10 @@ package AIDeliver.com.example.AIDeliver.service.Impl;
 
 import AIDeliver.com.example.AIDeliver.common.util.OrderStatus;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
+import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.enity.User;
+import AIDeliver.com.example.AIDeliver.repository.DelivererRepository;
 import AIDeliver.com.example.AIDeliver.repository.OrderRepository;
 import AIDeliver.com.example.AIDeliver.repository.UserRepository;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +22,8 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    @Autowired
+    private DelivererRepository delivererRepository;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository) {
@@ -155,10 +160,16 @@ public class OrderServiceImpl implements OrderService {
         String weightStr = orderConfirmationRequest.getOrderInfo().getWeight().trim();
         Double weight = Double.parseDouble(weightStr.substring(0, weightStr.length() - 2));
         String size = "Small";
-//        String delivererType = orderConfirmationRequest.getSelected().getOption();
+        String delivererType = orderConfirmationRequest.getSelected().getOption();
         Double price = orderConfirmationRequest.getSelected().getPrice();
-//        Deliverer deliverer = new Deliverer();
-//        deliverer.setType(delivererType);
+
+
+
+
+        Deliverer  deliverer;
+        deliverer = delivererRepository.findDelivererById(1L).get();
+
+        orders.setDeliverer(deliverer);
 //        userRepository.save(orderConfirmationRequest.getUser());
 
         User user = userRepository.findUserByEmail(orderConfirmationRequest.getUser().getEmail());
@@ -177,6 +188,8 @@ public class OrderServiceImpl implements OrderService {
         orders.setTrackingNumber(trackingNumber);
 
         orders.setOrderStatus(OrderStatus.PENDING.name());
+
+        user.getOrders().add(orders);
         orderRepository.save(orders);
     }
 

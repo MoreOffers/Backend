@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface DelivererRepository extends JpaRepository<Deliverer, Long> {
-   // Optional<Deliverer> findDelivererByEquipId(String equip_id);
     Optional<Deliverer> findDelivererById(Long deliverer_id);
 }
 

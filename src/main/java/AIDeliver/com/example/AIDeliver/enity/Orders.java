@@ -20,7 +20,7 @@ public class Orders {
     private String trackingNumber;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
 
@@ -28,9 +28,9 @@ public class Orders {
 //    @Column(name = "deliverer_id", nullable = false)
 //    private Long delivererid;
 
-//    @OneToOne
-//    @JoinColumn(name="deliverer_id", referencedColumnName = "id")
-//    private Deliverer deliverer;
+    @OneToOne(targetEntity = Deliverer.class, cascade = CascadeType.ALL)
+    @JoinColumn(name="deliverer_id", referencedColumnName = "id", nullable=true)
+    private Deliverer deliverer;
 
     @Column(name = "sender_address")
     private String senderAddress;

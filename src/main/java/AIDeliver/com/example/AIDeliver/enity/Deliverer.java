@@ -9,29 +9,28 @@ import javax.persistence.*;
 public class Deliverer {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(columnDefinition = "long default 1")
-    private long id;
+    private Long id;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = true)
     private String type;
 
-//    @OneToOne
-//    @JoinColumn(name="orders_id", referencedColumnName = "id", nullable=true)
+//    @OneToOne(targetEntity = Orders.class, cascade = CascadeType.ALL)
+//    @JoinColumn(name="deliverer_id", referencedColumnName = "id", nullable=true)
 //    private Orders orders;
 
-    @Column
-    private boolean equip_status;
+    @Column(name = "equip_status", nullable = true)
+    private Boolean equip_status;
 
-    @Column
-    private int max_weight;
+    @Column(name = "max_weight", nullable = true)
+    private Integer max_weight;
 
-    @Column(name = "price", nullable = false)
-    private double price;
+    @Column(name = "price", nullable = true)
+    private Double price;
 
-    @Column
+    @Column(name = "current_position", nullable = true)
     private String current_position;
 
-    @Column
+    @Column(name = "equip_id", nullable = true)
     private String equip_id;
 
     //add station

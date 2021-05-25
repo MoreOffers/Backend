@@ -53,7 +53,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(targetEntity = Orders.class, cascade = CascadeType.ALL)
-    @JoinColumn(name ="orders_id",referencedColumnName = "id", nullable = true)
+    @JoinColumn(name ="user_id",referencedColumnName = "id", nullable = true)
     private List<Orders> orders;
 
 }
