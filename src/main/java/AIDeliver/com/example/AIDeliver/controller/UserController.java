@@ -79,6 +79,6 @@ public class UserController {
             @PathVariable("userid") Long userId,
             User user
     ) {
-        userService.updateUser(user);
+        userService.save(user);
     }
 }

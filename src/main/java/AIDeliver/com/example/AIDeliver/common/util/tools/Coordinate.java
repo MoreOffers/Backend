@@ -1,4 +1,4 @@
-package AIDeliver.com.example.AIDeliver.tools;
+package AIDeliver.com.example.AIDeliver.common.util.tools;
 
 
 public class Coordinate {
