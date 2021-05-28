@@ -2,6 +2,8 @@ package AIDeliver.com.example.AIDeliver.service;
 
 
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
+import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
+import AIDeliver.com.example.AIDeliver.dto.response.Selected;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public interface OrderService {
 
     String createOrder(OrderConfirmationRequest orderConfirmationRequest);
     List<Orders> getHistorySalesOrders(Long userId);
+
 
 //    void setSalesOrderStatus(String status);
 }

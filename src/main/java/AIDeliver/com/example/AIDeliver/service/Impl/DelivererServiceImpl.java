@@ -1,5 +1,6 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
+import AIDeliver.com.example.AIDeliver.common.util.Constant;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
 import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.User;
@@ -96,12 +97,29 @@ public String tracking(List<Station> stations, int zipcode) {
 
     @Override
     public Double getRobotEstimatePrice(OrderInfoRequest orderInfoRequest) {
-        return 100.0;
+        //weight*unit price* abs(zip1 - zip2)
+
+        int senderZip = Integer.parseInt(orderInfoRequest.getFrom());
+        int receiverZip = Integer.parseInt(orderInfoRequest.getTo());
+        String weightStr = orderInfoRequest.getWeight().trim();
+        Double weight = Double.parseDouble(weightStr.substring(0, weightStr.length() - 2));
+        Double distance = Math.sqrt(Math.abs(senderZip - receiverZip)+1);
+
+        double price = weight * distance * Constant.ROBOTPRICE;
+        return price;
+
     }
 
     @Override
     public Double getDroneEstimatePrice(OrderInfoRequest orderInfoRequest) {
-        return 200.0;
+        int senderZip = Integer.parseInt(orderInfoRequest.getFrom());
+        int receiverZip = Integer.parseInt(orderInfoRequest.getTo());
+        String weightStr = orderInfoRequest.getWeight().trim();
+        Double weight = Double.parseDouble(weightStr.substring(0, weightStr.length() - 2));
+        Double distance = Math.sqrt(Math.abs(senderZip - receiverZip)+1);
+        double price = weight * distance * Constant.DRONEPRICE;
+        return price;
+
     }
 
 

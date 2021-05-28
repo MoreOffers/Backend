@@ -93,7 +93,6 @@ public class OrderController {
         return new ResponseEntity<>(orderHistoryResponse, HttpStatus.OK);
     }
 
-
     @GetMapping( value = { "/user/tracking","tracking" })
     public ResponseEntity<OrderTrackingResponse> OrderTracking (@RequestBody OrderTrackingRequest orderTrackingRequest){
         String trackingNumber = orderTrackingRequest.getTrackingNumber();
@@ -107,7 +106,7 @@ public class OrderController {
         stationStatus1.setDate(date);
         delivererPath.put("station1", stationStatus1);
 
-        StationStatus stationStatus2 = new StationStatus();
+        //StationStatus stationStatus2 = new StationStatus();
 
         Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -121,13 +120,12 @@ public class OrderController {
         c.add(Calendar.DATE, 1);
         date = c.getTime();
 
-        StationStatus stationStatus3 = new StationStatus();
+       // StationStatus stationStatus3 = new StationStatus();
         stationStatus1.setDate(date);
         delivererPath.put("station3", stationStatus1);
 
         orderTrackingResponse.setDelivererPath(delivererPath);
         return new ResponseEntity(orderTrackingResponse, HttpStatus.OK);
     }
-
 }
 
