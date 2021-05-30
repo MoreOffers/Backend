@@ -54,16 +54,6 @@ public class OrderServiceImpl implements OrderService {
         return trackingNumber;
     }
 
-
-//    @Override
-//    public String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
-//        String trackingNumber = generateTrackingNumber();
-//        userRepository.save(modelMapper.map(userDTO, User.class));
-//        orderRepository.save(modelMapper.map(orderDTO, Orders.class));
-////        delivererRepository.save(modelMapper.map(selectedDTO, Deliverer.class));
-//        return trackingNumber;
-//    }
-
     @Override
     public OrderHistoryDTO getHistorySalesOrdersByEmail(String email) {
         OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
