@@ -1,11 +1,7 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.common.util.Constant;
-import AIDeliver.com.example.AIDeliver.dto.OrderDTO;
-import AIDeliver.com.example.AIDeliver.dto.PlaceOrderDTO;
-import AIDeliver.com.example.AIDeliver.dto.SelectedDTO;
-import AIDeliver.com.example.AIDeliver.dto.UserDTO;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
+import AIDeliver.com.example.AIDeliver.dto.*;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderHistoryRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderTrackingRequest;
@@ -63,6 +59,7 @@ public class OrderController {
     }
 
     // registered customer
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/placeOrderConfirm")
     public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
@@ -72,33 +69,13 @@ public class OrderController {
         return trackingNumer;
     }
 
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/historyOrder")
-    public ResponseEntity<OrderHistoryResponse> findAllOrders(@RequestBody OrderHistoryRequest orderHistoryRequest){
-        User user = userService.findUserByEmail(orderHistoryRequest.getEmail());
-        List<Orders> orders = orderService.getHistorySalesOrders(user.getId());
-
-        OrderHistoryResponse orderHistoryResponse = new OrderHistoryResponse();
-        Map<String,List<Orders>> pendingOrders = new HashMap<>();
-        Map<String,List<Orders>> completedOrders = new HashMap<>();
-
-        pendingOrders.put("pending", new ArrayList<>());
-        completedOrders.put("completed", new ArrayList<>());
-
-        for (Orders order : orders) {
-            String status = order.getOrderStatus();
-            if (status.toLowerCase() != "completed") {
-                pendingOrders.get("pending").add(order);
-            } else {
-                completedOrders.get("pending").add(order);
-            }
-        }
-
-        orderHistoryResponse.setPending(pendingOrders);
-        orderHistoryResponse.setCompleted(completedOrders);
-
-        return new ResponseEntity<>(orderHistoryResponse, HttpStatus.OK);
+    public OrderHistoryDTO findAllOrders(@RequestBody UserDTO userDTO){
+        String email = userDTO.getEmail();
+        return orderService.getHistorySalesOrdersByEmail(email);
     }
-
 
     @GetMapping( value = { "/user/tracking","tracking" })
     public ResponseEntity<OrderTrackingResponse> OrderTracking (@RequestBody OrderTrackingRequest orderTrackingRequest){

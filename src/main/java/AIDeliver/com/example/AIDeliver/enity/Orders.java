@@ -23,11 +23,6 @@ public class Orders {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
-
-//    @OneToOne(fetch = FetchType.LAZY, optional = false)
-//    @Column(name = "deliverer_id", nullable = false)
-//    private Long delivererid;
-
     @OneToOne(targetEntity = Deliverer.class, cascade = CascadeType.ALL)
     @JoinColumn(name="deliverer_id", referencedColumnName = "id", nullable=true)
     private Deliverer deliverer;
