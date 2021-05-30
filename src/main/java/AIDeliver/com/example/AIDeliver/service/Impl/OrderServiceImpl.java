@@ -44,11 +44,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
         String trackingNumber = generateTrackingNumber();
-        orderRepository.save(modelMapper.map(orderDTO, Orders.class));
-        Deliverer deliverer = new Deliverer();
-        deliverer.setType(selectedDTO.getType());
+
+//        Deliverer deliverer = new Deliverer();
+//        deliverer.setType(selectedDTO.getType());
 //        Deliverer deliverer = delivererRepository.save(modelMapper.map(selected, Deliverer.class));
         userRepository.save(modelMapper.map(userDTO, User.class));
+        delivererRepository.save(modelMapper.map(selectedDTO, Deliverer.class));
+        orderRepository.save(modelMapper.map(orderDTO, Orders.class));
         return trackingNumber;
     }
 
