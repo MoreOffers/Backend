@@ -44,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
         String trackingNumber = generateTrackingNumber();
         orderDTO.setUser(modelMapper.map(userDTO, User.class));
         orderDTO.setDeliverer(modelMapper.map(selectedDTO, Deliverer.class));
+        orderDTO.setOrderStatus("pending");
         orderRepository.save(modelMapper.map(orderDTO, Orders.class));
         return trackingNumber;
     }
@@ -72,8 +73,8 @@ public class OrderServiceImpl implements OrderService {
 
 
         Map<String, List<Orders>> completeMap = new HashMap<>();
-        pendingMap.put("completed", completedList);
-        orderHistoryDTO.setPending(completeMap);
+        completeMap.put("completed", completedList);
+        orderHistoryDTO.setCompleted(completeMap);
 
         return orderHistoryDTO;
     }

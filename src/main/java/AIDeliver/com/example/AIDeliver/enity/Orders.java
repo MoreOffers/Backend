@@ -1,5 +1,6 @@
 package AIDeliver.com.example.AIDeliver.enity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -19,10 +20,12 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String trackingNumber;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER,  cascade=CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
+    @JsonIgnore
     @OneToOne(targetEntity = Deliverer.class, cascade = CascadeType.ALL)
     @JoinColumn(name="deliverer_id", referencedColumnName = "id", nullable=true)
     private Deliverer deliverer;
