@@ -1,7 +1,7 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.common.Exception.ApiRequestException;
-import AIDeliver.com.example.AIDeliver.dto.request.UserLoginRequest;
+import AIDeliver.com.example.AIDeliver.dto.UserDTO;
 import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.service.SecurityService;
 import AIDeliver.com.example.AIDeliver.service.UserService;
@@ -29,19 +29,18 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody UserLoginRequest request) {
+    public ResponseEntity<User> login(@RequestBody UserDTO userDTO) {
 
         ResponseEntity<User> response = new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
         try {
 
-            User user = userService.findUserByEmail(request.getEmail());
+            User user = userService.findUserByEmail(userDTO.getEmail());
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
             if (user != null ) {
-                Boolean matches =  encoder.matches(request.getPassword(), user.getPassword());
+                Boolean matches =  encoder.matches(userDTO.getPassword(), user.getPassword());
                 response = new ResponseEntity<>(user, HttpStatus.OK);
             }
 
@@ -51,17 +50,17 @@ public class UserController {
         return response;
     }
 
-    @GetMapping
+    @GetMapping(path = "/getUser")
     public List<User> getUser() {
         return userService.getUsers();
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<String> addNewUser(@RequestBody User user) {
+    public ResponseEntity<String> addNewUser(@RequestBody UserDTO userDTO) {
 
         ResponseEntity<String> response = null;
         try {
-            Boolean isSuccess = userService.addNewUser(user);
+            Boolean isSuccess = userService.addNewUser(userDTO);
             response = new ResponseEntity(isSuccess.toString(), HttpStatus.OK);
         } catch (Exception e) {
             throw new ApiRequestException(e.toString(), HttpStatus.BAD_REQUEST);
