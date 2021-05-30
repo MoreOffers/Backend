@@ -12,15 +12,11 @@ import java.util.List;
 
 @Service
 public interface OrderService {
-//    Orders createOrder(OrderInfoRequest orderInfo, Selected option, User user);
 //    Optional<Orders> salesOrderDetail(Long salesOrderId);
 //    String getSalesOrderStatus(Long salesOrderId);
 //    void updateSalesOrderStatus(Long salesOrderId, String status);
 
     String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO);
     List<Orders> getHistorySalesOrders(Long userId);
-
     OrderHistoryDTO getHistorySalesOrdersByEmail(String email);
-
-//    void setSalesOrderStatus(String status);
 }
