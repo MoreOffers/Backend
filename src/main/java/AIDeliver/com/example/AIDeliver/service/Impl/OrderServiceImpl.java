@@ -18,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -43,37 +41,40 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
-        System.out.println("createOrder:");
         String trackingNumber = generateTrackingNumber();
         orderDTO.setUser(modelMapper.map(userDTO, User.class));
-
-        userRepository.save(modelMapper.map(userDTO, User.class));
-        delivererRepository.save(modelMapper.map(selectedDTO, Deliverer.class));
+        orderDTO.setDeliverer(modelMapper.map(selectedDTO, Deliverer.class));
         orderRepository.save(modelMapper.map(orderDTO, Orders.class));
-
         return trackingNumber;
     }
 
     @Override
     public OrderHistoryDTO getHistorySalesOrdersByEmail(String email) {
         OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
-        orderHistoryDTO.getPending().put("pending", new ArrayList<>());
-        orderHistoryDTO.getCompleted().put("completed", new ArrayList<>());
 
-        List<Orders> pendingList = orderHistoryDTO.getPending().get("pending");
-        List<Orders> completedList = orderHistoryDTO.getCompleted().get("completed");
+        List<Orders> pendingList = new ArrayList<>();
+        List<Orders> completedList = new ArrayList<>();
 
         Long id = userRepository.findUserByEmail(email).getId();
         List<Orders> orders = orderRepository.findSalesOrderByUserId(id);
 
         for (Orders order : orders) {
-            String status = order.getOrderStatus();
+            String status = order.getStatus();
             if (status.toLowerCase() != "completed") {
                 pendingList.add(order);
             } else {
                 completedList.add(order);
             }
         }
+        Map<String, List<Orders>> pendingMap = new HashMap<>();
+        pendingMap.put("pending", pendingList);
+        orderHistoryDTO.setPending(pendingMap);
+
+
+        Map<String, List<Orders>> completeMap = new HashMap<>();
+        pendingMap.put("completed", completedList);
+        orderHistoryDTO.setPending(completeMap);
+
         return orderHistoryDTO;
     }
 

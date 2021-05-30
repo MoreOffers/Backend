@@ -51,8 +51,8 @@ public class Orders {
     @Column(name = "receiver_zipCode", nullable = true)
     private String receiverZipCode;
 
-    @Column(name = "order_status", nullable = true)
-    private String orderStatus;
+    @Column(name = "status", nullable = true)
+    private String status;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
