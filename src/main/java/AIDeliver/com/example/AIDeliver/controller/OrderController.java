@@ -1,6 +1,10 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.common.util.Constant;
+import AIDeliver.com.example.AIDeliver.dto.OrderDTO;
+import AIDeliver.com.example.AIDeliver.dto.PlaceOrderDTO;
+import AIDeliver.com.example.AIDeliver.dto.SelectedDTO;
+import AIDeliver.com.example.AIDeliver.dto.UserDTO;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderHistoryRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
@@ -60,11 +64,13 @@ public class OrderController {
 
     // registered customer
     @PostMapping("/placeOrderConfirm")
-    public String placeOrder(@RequestBody OrderConfirmationRequest orderConfirmationRequest){
-        String trackingNumer = orderService.createOrder(orderConfirmationRequest);
+    public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
+        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
+        UserDTO userDTO = placeOrderDTO.getUser();
+        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
+        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
         return trackingNumer;
     }
-
 
     @GetMapping("/historyOrder")
     public ResponseEntity<OrderHistoryResponse> findAllOrders(@RequestBody OrderHistoryRequest orderHistoryRequest){

@@ -81,7 +81,7 @@ public class Orders {
     private String paymentCard;
 
     @Column(name = "weight")
-    private Double weight;
+    private String weight;
 
     @Column
     private String size;
