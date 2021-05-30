@@ -15,6 +15,7 @@ import org.aspectj.weaver.ast.Or;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -39,14 +40,29 @@ public class OrderServiceImpl implements OrderService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
     public String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
+        System.out.println("createOrder:");
         String trackingNumber = generateTrackingNumber();
+        orderDTO.setUser(modelMapper.map(userDTO, User.class));
+
         userRepository.save(modelMapper.map(userDTO, User.class));
+        delivererRepository.save(modelMapper.map(selectedDTO, Deliverer.class));
         orderRepository.save(modelMapper.map(orderDTO, Orders.class));
-//        delivererRepository.save(modelMapper.map(selectedDTO, Deliverer.class));
+
         return trackingNumber;
     }
+
+
+//    @Override
+//    public String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
+//        String trackingNumber = generateTrackingNumber();
+//        userRepository.save(modelMapper.map(userDTO, User.class));
+//        orderRepository.save(modelMapper.map(orderDTO, Orders.class));
+////        delivererRepository.save(modelMapper.map(selectedDTO, Deliverer.class));
+//        return trackingNumber;
+//    }
 
     @Override
     public OrderHistoryDTO getHistorySalesOrdersByEmail(String email) {

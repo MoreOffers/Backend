@@ -19,7 +19,7 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String trackingNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER,  cascade=CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
