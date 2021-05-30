@@ -3,11 +3,13 @@ package AIDeliver.com.example.AIDeliver.dto;
 import lombok.Data;
 
 
+import javax.persistence.Id;
 import java.util.Date;
 
 @Data
 public class UserDTO {
 
+    @Id
     private Long id;
     private String name;
     private String password;

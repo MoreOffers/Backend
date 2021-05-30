@@ -3,11 +3,14 @@ package AIDeliver.com.example.AIDeliver.dto;
 import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.User;
 import lombok.Data;
+
+import javax.persistence.Id;
 import java.util.Date;
 
 @Data
 public class OrderDTO {
 
+    @Id
     private Long id;
     private String trackingNumber;
     private User user;

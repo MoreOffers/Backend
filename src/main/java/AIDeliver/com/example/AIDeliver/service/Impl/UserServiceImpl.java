@@ -44,10 +44,11 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("Email has been taken");
         }
 
-        userRepository.save(modelMapper.map(userDTO, User.class));
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
         userDTO.setPassword(encodedPassword);
+        userDTO.setCredit(100.0);
+        userRepository.save(modelMapper.map(userDTO, User.class));
         return true;
     }
 
