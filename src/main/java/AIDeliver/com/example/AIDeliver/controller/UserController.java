@@ -2,14 +2,15 @@ package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.common.Exception.ApiRequestException;
 import AIDeliver.com.example.AIDeliver.dto.request.UserLoginRequest;
+import AIDeliver.com.example.AIDeliver.dto.request.UserProfileChangeRequest;
 import AIDeliver.com.example.AIDeliver.enity.User;
+import AIDeliver.com.example.AIDeliver.repository.UserRepository;
 import AIDeliver.com.example.AIDeliver.service.SecurityService;
 import AIDeliver.com.example.AIDeliver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,9 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @PostMapping("/login")
@@ -74,11 +78,27 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    @PutMapping(path = "{userId}")
-    public void updateUser(
-            @PathVariable("userid") Long userId,
-            User user
-    ) {
+//    @PutMapping(path = "/{userId}")
+//    public void updateUser(@PathVariable("userid") Long userId, User user) {
+//        //User user = userService.findUserByEmail(request.getEmail());
+//        userService.save(user);
+//    }
+
+    @PutMapping(path = "/update")
+    public ResponseEntity<User> updateUser(@RequestBody UserProfileChangeRequest request) {
+
+        User user = userService.findUserById(request.getId());
+
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setZipCode(request.getZipCode());
+        user.setAddress(request.getAddress());
+        user.setMobile(request.getMobile());
+        user.setCredit(request.getCredit());
+
         userService.save(user);
+
+        return new ResponseEntity<>(userRepository.findUserById(user.getId()),HttpStatus.OK);
     }
+
 }

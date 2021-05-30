@@ -1,10 +1,7 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.common.util.Constant;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderHistoryRequest;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderTrackingRequest;
+import AIDeliver.com.example.AIDeliver.dto.request.*;
 import AIDeliver.com.example.AIDeliver.dto.response.OrderHistoryResponse;
 import AIDeliver.com.example.AIDeliver.dto.response.OrderTrackingResponse;
 import AIDeliver.com.example.AIDeliver.dto.response.Selected;
@@ -37,6 +34,12 @@ public class OrderController {
 
     @PostMapping(path = "/placeOrderQuote")
     public ResponseEntity<List<Selected>> quote(@RequestBody OrderInfoRequest orderInfoRequest) {
+//        System.out.println("PRINTING ORDER INFO REQUEST111: "+ orderInfoRequest.toString());
+//        System.out.println("PRINTING 2222: "+ orderInfoRequest.getOrderInfoRequest().toString());
+//
+//        System.out.println("PRINTING 333: "+ orderInfoRequest.getOrderInfoRequest().get("from"));
+
+
 
         Double robotPrice = delivererService.getRobotEstimatePrice(orderInfoRequest);
         Double dronePrice = delivererService.getDroneEstimatePrice(orderInfoRequest);

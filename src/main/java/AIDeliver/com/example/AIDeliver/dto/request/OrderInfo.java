@@ -1,12 +1,6 @@
 package AIDeliver.com.example.AIDeliver.dto.request;
 
-import lombok.Data;
-
-import java.util.Map;
-
-@Data
-public class OrderInfoRequest {
- //   private Map<String, String> orderInfoRequest;
+public class OrderInfo {
     private String from;
     private String to;
     private String fromAddress;

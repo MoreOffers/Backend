@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void save(User user) {
+
         userRepository.save(user);
     }
 
@@ -61,5 +62,11 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
+
+    @Override
+    public User findUserById(Long id) {
+        return userRepository.findUserById(id);
+    }
+
 
 }

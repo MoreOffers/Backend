@@ -14,6 +14,8 @@ public interface UserService {
     void deleteUser(Long studentId);
     void save(User user);
     User findUserByEmail(String email);
+    User findUserById(Long id);
+
 
 //    List<Orders> getHistorySalesOrders(Long userId);
 }

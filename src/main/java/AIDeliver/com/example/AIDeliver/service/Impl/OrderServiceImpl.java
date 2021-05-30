@@ -163,8 +163,9 @@ public class OrderServiceImpl implements OrderService {
         String delivererType = orderConfirmationRequest.getSelected().getOption();
         Double price = orderConfirmationRequest.getSelected().getPrice();
 
-        Deliverer  deliverer = new Deliverer();
+        Deliverer deliverer = new Deliverer();
         deliverer.setType(delivererType);
+        deliverer.setMax_weight(50); //
 
         orders.setDeliverer(deliverer);
 
