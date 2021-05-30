@@ -35,7 +35,6 @@ public class UserController {
         ResponseEntity<User> response = new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
         try {
-
             User user = userService.findUserByEmail(userDTO.getEmail());
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -56,11 +55,25 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<String> addNewUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
 
         ResponseEntity<String> response = null;
         try {
             Boolean isSuccess = userService.addNewUser(userDTO);
+            response = new ResponseEntity(isSuccess.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ApiRequestException(e.toString(), HttpStatus.BAD_REQUEST);
+        }
+        return response;
+    }
+
+
+    @PostMapping(path = "/update")
+    public ResponseEntity<String> updateProfile(@RequestBody UserDTO userDTO) {
+
+        ResponseEntity<String> response = null;
+        try {
+            Boolean isSuccess = userService.updateUser(userDTO);
             response = new ResponseEntity(isSuccess.toString(), HttpStatus.OK);
         } catch (Exception e) {
             throw new ApiRequestException(e.toString(), HttpStatus.BAD_REQUEST);
@@ -73,11 +86,4 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    @PutMapping(path = "{userId}")
-    public void updateUser(
-            @PathVariable("userid") Long userId,
-            User user
-    ) {
-        userService.save(user);
-    }
 }
