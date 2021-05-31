@@ -1,5 +1,6 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
+import AIDeliver.com.example.AIDeliver.common.util.Constant;
 import AIDeliver.com.example.AIDeliver.dto.*;
 import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
@@ -42,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findUserByEmail(userDTO.getEmail());
         orders.setUser(user);
         orderDTO.setDeliverer(modelMapper.map(selectedDTO, Deliverer.class));
-        orders.setStatus("pending");
+        orders.setStatus(Constant.PENDING_STATUS);
         orders.setTrackingNumber(trackingNumber);
         orderRepository.save(orders);
         return trackingNumber;
@@ -56,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
         User user = modelMapper.map(userDTO, User.class);
         user.setIsVisitor(true);
         orders.setUser(user);
-        orders.setStatus("pending");
+        orders.setStatus(Constant.PENDING_STATUS);
         orders.setTrackingNumber(trackingNumber);
         orderRepository.save(orders);
         return trackingNumber;
@@ -74,18 +75,18 @@ public class OrderServiceImpl implements OrderService {
 
         for (Orders order : orders) {
             String status = order.getStatus();
-            if (status.toLowerCase() != "completed") {
+            if (status.toLowerCase() != Constant.PENDING_STATUS) {
                 pendingList.add(order);
             } else {
                 completedList.add(order);
             }
         }
         Map<String, List<Orders>> pendingMap = new HashMap<>();
-        pendingMap.put("pending", pendingList);
+        pendingMap.put(Constant.PENDING_STATUS, pendingList);
         orderHistoryDTO.setPending(pendingMap);
 
         Map<String, List<Orders>> completeMap = new HashMap<>();
-        completeMap.put("completed", completedList);
+        completeMap.put(Constant.COMPLETED_STATUS, completedList);
         orderHistoryDTO.setCompleted(completeMap);
 
         return orderHistoryDTO;
