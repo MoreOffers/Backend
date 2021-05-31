@@ -41,9 +41,11 @@ public class OrderServiceImpl implements OrderService {
         String trackingNumber = generateTrackingNumber();
         Orders orders = modelMapper.map(orderDTO, Orders.class);
         User user = userRepository.findUserByEmail(userDTO.getEmail());
+        Deliverer deliverer = modelMapper.map(selectedDTO, Deliverer.class);
         orders.setUser(user);
-        delivererRepository.save(modelMapper.map(selectedDTO, Deliverer.class));
-        orders.setDeliverer(delivererRepository.findDelivererByType(modelMapper.map(selectedDTO, Deliverer.class).getType()));
+        delivererRepository.save(deliverer);
+        deliverer.setIs_available(true);
+        orders.setDeliverer(findAvailableDeliverer(selectedDTO.getType()));
         orders.setStatus(Constant.PENDING_STATUS);
         orders.setTrackingNumber(trackingNumber);
         orderRepository.save(orders);
@@ -63,6 +65,42 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orders);
         return trackingNumber;
     }
+
+
+    @Transactional
+    @Override
+    public String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
+        String trackingNumber = generateTrackingNumber();
+        Orders orders = modelMapper.map(orderDTO, Orders.class);
+        User user = userRepository.findUserByEmail(userDTO.getEmail());
+        Deliverer deliverer = modelMapper.map(selectedDTO, Deliverer.class);
+
+        if (user == null) {
+            user = modelMapper.map(userDTO, User.class);
+        }
+
+        orders.setUser(user);
+        delivererRepository.save(deliverer);
+        deliverer.setIs_available(true);
+        orders.setDeliverer(findAvailableDeliverer(selectedDTO.getType()));
+        orders.setStatus(Constant.PENDING_STATUS);
+        orders.setTrackingNumber(trackingNumber);
+        orderRepository.save(orders);
+        return trackingNumber;
+    }
+
+    public Deliverer findAvailableDeliverer(String type) {
+        Deliverer candidate = null;
+        List<Deliverer> deliverers = delivererRepository.findAll();
+        for (Deliverer deliverer : deliverers) {
+            if (deliverer.getIs_available()) {
+                candidate = deliverer;
+                deliverer.setIs_available(false);
+            }
+        }
+        return candidate;
+    }
+
 
     @Override
     public OrderHistoryDTO getHistorySalesOrdersByEmail(String email) {
@@ -97,11 +135,6 @@ public class OrderServiceImpl implements OrderService {
     public Orders getSalesOrderBytrackingNumber(String trackingNumber) {
 
         return  orderRepository.findOrdersByTrackingNumber(trackingNumber);
-    }
-
-    @Override
-    public List<Orders> getHistorySalesOrders(Long userId) {
-        return orderRepository.findSalesOrderByUserId(userId);
     }
 
     private String generateTrackingNumber() {

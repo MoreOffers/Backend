@@ -6,4 +6,5 @@ import lombok.Data;
 public class SelectedDTO {
     private String type;
     private Double price;
+    private Boolean is_available;
 }

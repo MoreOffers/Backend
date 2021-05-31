@@ -1,7 +1,6 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.dto.*;
-import AIDeliver.com.example.AIDeliver.dto.response.OrderTrackingResponse;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
@@ -35,22 +34,22 @@ public class OrderController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/user/placeOrderConfirm")
+    @PostMapping(value={"/user/placeOrderConfirm", "/placeOrderConfirm"})
     public String userPlaceOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
         SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.registerUserCreateOrder(orderDTO, userDTO, selectedDTO);
+        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
         return trackingNumer;
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/placeOrderConfirm")
+    @PostMapping()
     public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
         SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.visitorCreateOrder(orderDTO, userDTO, selectedDTO);
+        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
         return trackingNumer;
     }
 
@@ -65,16 +64,15 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping( value = { "/tracking" })
     public OrderTrackingRspDTO OrderTracking (@RequestBody Map<String, String> trackingrequest){
+
         String trackingNumber = trackingrequest.get("trackingNumber");
         System.out.println(trackingNumber + "controller");
-    OrderTrackingRspDTO orderTrackingRspDTO;
+        OrderTrackingRspDTO orderTrackingRspDTO;
 
-    Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
+        Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
 
-    orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
-
-    System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
-
+        orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
+        System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
 
         return orderTrackingRspDTO;
     }
