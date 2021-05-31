@@ -99,10 +99,10 @@ public class OrderServiceImpl implements OrderService {
         return  orderRepository.findOrdersByTrackingNumber(trackingNumber);
     }
 
-    @Override
-    public List<Orders> getHistorySalesOrders(Long userId) {
-        return orderRepository.findSalesOrderByUserId(userId);
-    }
+//    @Override
+//    public List<Orders> getHistorySalesOrders(Long userId) {
+//        return orderRepository.findSalesOrderByUserId(userId);
+//    }
 
     private String generateTrackingNumber() {
         return UUID.randomUUID().toString().substring(0, 15);

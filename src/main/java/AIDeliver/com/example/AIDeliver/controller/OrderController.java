@@ -1,7 +1,6 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.dto.*;
-import AIDeliver.com.example.AIDeliver.dto.response.OrderTrackingResponse;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
@@ -65,16 +64,15 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping( value = { "/tracking" })
     public OrderTrackingRspDTO OrderTracking (@RequestBody Map<String, String> trackingrequest){
+
         String trackingNumber = trackingrequest.get("trackingNumber");
         System.out.println(trackingNumber + "controller");
-    OrderTrackingRspDTO orderTrackingRspDTO;
+        OrderTrackingRspDTO orderTrackingRspDTO;
 
-    Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
+        Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
 
-    orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
-
-    System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
-
+        orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
+        System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
 
         return orderTrackingRspDTO;
     }
