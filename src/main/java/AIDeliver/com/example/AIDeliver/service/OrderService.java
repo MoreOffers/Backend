@@ -16,7 +16,8 @@ public interface OrderService {
 //    String getSalesOrderStatus(Long salesOrderId);
 //    void updateSalesOrderStatus(Long salesOrderId, String status);
 
-    String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO);
+    String registerUserCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO);
+    String visitorCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO);
     List<Orders> getHistorySalesOrders(Long userId);
     OrderHistoryDTO getHistorySalesOrdersByEmail(String email);
 }

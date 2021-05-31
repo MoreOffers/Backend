@@ -56,12 +56,22 @@ public class OrderController {
 
     // registered customer
     @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/user/placeOrderConfirm")
+    public String userPlaceOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
+        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
+        UserDTO userDTO = placeOrderDTO.getUser();
+        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
+        String trackingNumer = orderService.registerUserCreateOrder(orderDTO, userDTO, selectedDTO);
+        return trackingNumer;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/placeOrderConfirm")
     public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
         SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
+        String trackingNumer = orderService.visitorCreateOrder(orderDTO, userDTO, selectedDTO);
         return trackingNumer;
     }
 

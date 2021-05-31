@@ -27,5 +27,6 @@ public class OrderDTO {
     private double paymentAmount;
     private String weight;
     private String size;
+    private String status;
 
 }

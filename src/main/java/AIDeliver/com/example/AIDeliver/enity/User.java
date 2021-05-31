@@ -56,4 +56,7 @@ public class User {
     @JoinColumn(name ="user_id",referencedColumnName = "id", nullable = true)
     private List<Orders> orders;
 
+    @Column(name = "is_visitor", nullable = true)
+    private Boolean isVisitor=false;
+
 }

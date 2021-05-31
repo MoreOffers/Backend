@@ -1,9 +1,6 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
-import AIDeliver.com.example.AIDeliver.common.util.OrderStatus;
 import AIDeliver.com.example.AIDeliver.dto.*;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
-import AIDeliver.com.example.AIDeliver.dto.response.Selected;
 import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.enity.User;
@@ -11,7 +8,6 @@ import AIDeliver.com.example.AIDeliver.repository.DelivererRepository;
 import AIDeliver.com.example.AIDeliver.repository.OrderRepository;
 import AIDeliver.com.example.AIDeliver.repository.UserRepository;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
-import org.aspectj.weaver.ast.Or;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,12 +36,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
+    public String registerUserCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
         String trackingNumber = generateTrackingNumber();
-        orderDTO.setUser(modelMapper.map(userDTO, User.class));
+        Orders orders = modelMapper.map(orderDTO, Orders.class);
+        User user = userRepository.findUserByEmail(userDTO.getEmail());
+        orders.setUser(user);
         orderDTO.setDeliverer(modelMapper.map(selectedDTO, Deliverer.class));
         orderDTO.setOrderStatus("pending");
-        orderRepository.save(modelMapper.map(orderDTO, Orders.class));
+        orderRepository.save(orders);
+        return trackingNumber;
+    }
+
+    @Transactional
+    @Override
+    public String visitorCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
+        String trackingNumber = generateTrackingNumber();
+        Orders orders = modelMapper.map(orderDTO, Orders.class);
+        User user = modelMapper.map(userDTO, User.class);
+        user.setIsVisitor(true);
+        orders.setUser(user);
+        orderRepository.save(orders);
         return trackingNumber;
     }
 
