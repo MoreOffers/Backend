@@ -54,7 +54,6 @@ public class OrderController {
 
     }
 
-    // registered customer
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/user/placeOrderConfirm")
     public String userPlaceOrder(@RequestBody PlaceOrderDTO placeOrderDTO){

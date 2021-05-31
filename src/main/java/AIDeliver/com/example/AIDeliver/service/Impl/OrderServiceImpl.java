@@ -42,7 +42,8 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findUserByEmail(userDTO.getEmail());
         orders.setUser(user);
         orderDTO.setDeliverer(modelMapper.map(selectedDTO, Deliverer.class));
-        orderDTO.setOrderStatus("pending");
+        orders.setStatus("pending");
+        orders.setTrackingNumber(trackingNumber);
         orderRepository.save(orders);
         return trackingNumber;
     }
@@ -55,6 +56,8 @@ public class OrderServiceImpl implements OrderService {
         User user = modelMapper.map(userDTO, User.class);
         user.setIsVisitor(true);
         orders.setUser(user);
+        orders.setStatus("pending");
+        orders.setTrackingNumber(trackingNumber);
         orderRepository.save(orders);
         return trackingNumber;
     }
@@ -80,7 +83,6 @@ public class OrderServiceImpl implements OrderService {
         Map<String, List<Orders>> pendingMap = new HashMap<>();
         pendingMap.put("pending", pendingList);
         orderHistoryDTO.setPending(pendingMap);
-
 
         Map<String, List<Orders>> completeMap = new HashMap<>();
         completeMap.put("completed", completedList);

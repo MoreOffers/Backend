@@ -14,7 +14,6 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -55,7 +54,7 @@ public class Orders {
     private String receiverZipCode;
 
     @Column(name = "status", nullable = true)
-    private String status;
+    private String status = "pending";
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
