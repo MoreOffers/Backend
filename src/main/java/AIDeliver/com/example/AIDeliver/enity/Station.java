@@ -12,7 +12,6 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    //add zipCode
     @Column(name = "zipcode", nullable = false)
     private Integer zipcode;
 

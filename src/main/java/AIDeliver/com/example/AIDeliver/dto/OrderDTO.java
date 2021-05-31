@@ -5,7 +5,6 @@ import AIDeliver.com.example.AIDeliver.enity.User;
 import lombok.Data;
 
 import javax.persistence.Id;
-import java.util.Date;
 
 @Data
 public class OrderDTO {
