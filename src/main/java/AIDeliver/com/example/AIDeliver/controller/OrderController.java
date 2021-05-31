@@ -1,11 +1,8 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
-import AIDeliver.com.example.AIDeliver.common.util.Constant;
 import AIDeliver.com.example.AIDeliver.dto.*;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderTrackingRequest;
 import AIDeliver.com.example.AIDeliver.dto.response.OrderTrackingResponse;
-import AIDeliver.com.example.AIDeliver.dto.response.Selected;
 import AIDeliver.com.example.AIDeliver.dto.response.StationStatus;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
@@ -31,27 +28,11 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/placeOrderQuote")
-    public ResponseEntity<List<Selected>> quote(@RequestBody OrderInfoRequest orderInfoRequest) {
-
-        Double robotPrice = delivererService.getRobotEstimatePrice(orderInfoRequest);
-        Double dronePrice = delivererService.getDroneEstimatePrice(orderInfoRequest);
-
-        List<Selected> res = new ArrayList<>();
-
-        Selected robotOpt = new Selected();
-        robotOpt.setOption(Constant.Robot);
-        robotOpt.setPrice(robotPrice);
-
-        Selected droneOpt = new Selected();
-        droneOpt.setOption(Constant.Drone);
-        droneOpt.setPrice(dronePrice);
-
-        res.add(robotOpt);
-        res.add(droneOpt);
-
+    public ResponseEntity<OrderQuoteRspDTO> quote(@RequestBody PlaceOrderDTO placeOrderDTO) {
+        OrderQuoteRspDTO res = delivererService.getOptionQuote(placeOrderDTO.getOrderInfo());
         return new ResponseEntity<>(res, HttpStatus.OK);
-
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -82,6 +63,7 @@ public class OrderController {
         return orderService.getHistorySalesOrdersByEmail(email);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping( value = { "/user/tracking","tracking" })
     public ResponseEntity<OrderTrackingResponse> OrderTracking (@RequestBody OrderTrackingRequest orderTrackingRequest){
         String trackingNumber = orderTrackingRequest.getTrackingNumber();

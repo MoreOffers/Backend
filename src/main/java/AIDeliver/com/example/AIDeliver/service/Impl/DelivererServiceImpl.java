@@ -1,6 +1,9 @@
 package AIDeliver.com.example.AIDeliver.service.Impl;
 
-import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
+import AIDeliver.com.example.AIDeliver.common.util.Constant;
+import AIDeliver.com.example.AIDeliver.dto.OrderDTO;
+import AIDeliver.com.example.AIDeliver.dto.OrderQuoteRspDTO;
+import AIDeliver.com.example.AIDeliver.dto.SelectedDTO;
 import AIDeliver.com.example.AIDeliver.enity.Deliverer;
 import AIDeliver.com.example.AIDeliver.enity.Station;
 
@@ -24,6 +27,35 @@ public class DelivererServiceImpl implements DelivererService {
 
     public Optional<Deliverer> findDelivererById(Long deliverer_id) {
         return delivererRepository.findById(deliverer_id);
+    }
+
+    @Override
+    public OrderQuoteRspDTO getOptionQuote(OrderDTO orderDTO) {
+        OrderQuoteRspDTO orderQuoteRspDTO = new OrderQuoteRspDTO();
+        SelectedDTO selectedDTORobot = buildOption(Constant.ROBOT, orderDTO);
+        SelectedDTO selectedDTODrone = buildOption(Constant.DRONE, orderDTO);
+        orderQuoteRspDTO.setRobot(selectedDTORobot);
+        orderQuoteRspDTO.setDrone(selectedDTODrone);
+        return orderQuoteRspDTO;
+    }
+
+    private SelectedDTO buildOption(String type, OrderDTO orderDTO) {
+        SelectedDTO selectedDTO = new SelectedDTO();
+        selectedDTO.setType(type);
+        selectedDTO.setPrice(getEstimatePrice(type, orderDTO));
+        return selectedDTO;
+    }
+
+    private double getEstimatePrice(String type, OrderDTO orderDTO) {
+
+        String weightStr = orderDTO.getWeight().trim();
+        String sizeStr = orderDTO.getSize().trim();
+
+        Double weight = Double.parseDouble(weightStr.substring(0, weightStr.length() - 2));
+        Double size = Double.parseDouble(sizeStr.substring(0, sizeStr.length() - 3));
+
+        Double base = weight * size;
+        return type == Constant.ROBOT ? base * 10 : base * 20;
     }
 
 
@@ -92,17 +124,6 @@ public String tracking(List<Station> stations, int zipcode) {
         return "Your package has been delivered";
 
     }
-
-    @Override
-    public Double getRobotEstimatePrice(OrderInfoRequest orderInfoRequest) {
-        return 100.0;
-    }
-
-    @Override
-    public Double getDroneEstimatePrice(OrderInfoRequest orderInfoRequest) {
-        return 200.0;
-    }
-
 
 }
 

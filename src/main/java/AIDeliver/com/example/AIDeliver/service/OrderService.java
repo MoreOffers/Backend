@@ -9,8 +9,6 @@ import java.util.List;
 
 @Service
 public interface OrderService {
-//    Optional<Orders> salesOrderDetail(Long salesOrderId);
-//    String getSalesOrderStatus(Long salesOrderId);
 //    void updateSalesOrderStatus(Long salesOrderId, String status);
 
     String registerUserCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO);
