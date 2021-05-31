@@ -55,15 +55,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean updateUser(UserDTO userDTO) {
         Long userId = userRepository.findUserByEmail(userDTO.getEmail()).getId();
-        User userToUpdate = userRepository.getOne(userId);
-        if (userDTO.getPassword() != null) {
-            userToUpdate.setPassword(userDTO.getPassword());
+        User user = userRepository.getOne(userId);
+        if (userDTO.getPassword() != null && userDTO.getPassword() != user.getPassword()) {
+            user.setPassword(userDTO.getPassword());
         }
-        if (userDTO.getName() != null) {
-            userToUpdate.setName(userDTO.getName());
+        if (userDTO.getName() != null && userDTO.getName() != user.getName()) {
+            user.setName(userDTO.getName());
         }
-
-        userRepository.save(userToUpdate);
+        if (userDTO.getAddress() != null && userDTO.getAddress() != user.getAddress()) {
+            user.setAddress(userDTO.getAddress());
+        }
+        if (userDTO.getZipCode() != null && userDTO.getZipCode() != user.getZipCode()) {
+            user.setZipCode(userDTO.getZipCode());
+        }
+        if (userDTO.getMobile() != null && userDTO.getMobile() != user.getMobile()) {
+            user.setMobile(userDTO.getMobile());
+        }
+        userRepository.save(user);
         return true;
     }
 
