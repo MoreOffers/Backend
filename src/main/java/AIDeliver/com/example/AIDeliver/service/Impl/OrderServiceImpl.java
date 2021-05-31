@@ -42,7 +42,8 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = modelMapper.map(orderDTO, Orders.class);
         User user = userRepository.findUserByEmail(userDTO.getEmail());
         orders.setUser(user);
-        orderDTO.setDeliverer(modelMapper.map(selectedDTO, Deliverer.class));
+        delivererRepository.save(modelMapper.map(selectedDTO, Deliverer.class));
+        orders.setDeliverer(delivererRepository.findDelivererByType(modelMapper.map(selectedDTO, Deliverer.class).getType()));
         orders.setStatus(Constant.PENDING_STATUS);
         orders.setTrackingNumber(trackingNumber);
         orderRepository.save(orders);
@@ -90,6 +91,15 @@ public class OrderServiceImpl implements OrderService {
         orderHistoryDTO.setCompleted(completeMap);
 
         return orderHistoryDTO;
+    }
+
+    @Override
+    public Orders getSalesOrderBytrackingNumber(String trackingNumber) {
+        System.out.println(trackingNumber + "trackingNumber-orderserviceimpl");
+//        System.out.println(orderRepository.findOrdersByTrackingNumber(trackingNumber).getTrackingNumber());
+//        System.out.println(orderRepository.findOrdersByTrackingNumber(trackingNumber).getTrackingNumber()+ "hhhhhhhhhhhh");
+
+        return  orderRepository.findOrdersByTrackingNumber(trackingNumber);
     }
 
     @Override

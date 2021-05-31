@@ -19,6 +19,7 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String trackingNumber;
 
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER,  cascade=CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
@@ -56,10 +57,9 @@ public class Orders {
     @Column(name = "status", nullable = true)
     private String status = "pending";
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+
     @Column(name = "create_time", nullable = true)
-    private Date createTime;
+    private String createTime;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

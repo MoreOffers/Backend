@@ -15,4 +15,5 @@ public interface OrderService {
     String visitorCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO);
     List<Orders> getHistorySalesOrders(Long userId);
     OrderHistoryDTO getHistorySalesOrdersByEmail(String email);
+    Orders getSalesOrderBytrackingNumber(String trackingNumber);
 }

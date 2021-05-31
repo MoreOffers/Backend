@@ -9,8 +9,6 @@ import javax.persistence.Id;
 @Data
 public class OrderDTO {
 
-    @Id
-    private Long id;
     private String trackingNumber;
     private User user;
     private Deliverer deliverer;
@@ -27,5 +25,5 @@ public class OrderDTO {
     private String weight;
     private String size;
     private String status;
-
+    private String createTime;
 }

@@ -1,9 +1,8 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.dto.*;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderTrackingRequest;
 import AIDeliver.com.example.AIDeliver.dto.response.OrderTrackingResponse;
-import AIDeliver.com.example.AIDeliver.dto.response.StationStatus;
+import AIDeliver.com.example.AIDeliver.enity.Orders;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
 import AIDeliver.com.example.AIDeliver.service.UserService;
@@ -64,39 +63,20 @@ public class OrderController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping( value = { "/user/tracking","tracking" })
-    public ResponseEntity<OrderTrackingResponse> OrderTracking (@RequestBody OrderTrackingRequest orderTrackingRequest){
-        String trackingNumber = orderTrackingRequest.getTrackingNumber();
-        OrderTrackingResponse orderTrackingResponse = new OrderTrackingResponse();
-        Map<String, StationStatus> delivererPath = new HashMap<>();
+    @GetMapping( value = { "/tracking" })
+    public OrderTrackingRspDTO OrderTracking (@RequestBody Map<String, String> trackingrequest){
+        String trackingNumber = trackingrequest.get("trackingNumber");
+        System.out.println(trackingNumber + "controller");
+    OrderTrackingRspDTO orderTrackingRspDTO;
 
-        Date date = new Date();
+    Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
 
-        StationStatus stationStatus1 = new StationStatus();
-        stationStatus1.setStatus("departed");
-        stationStatus1.setDate(date);
-        delivererPath.put("station1", stationStatus1);
+    orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
 
-        StationStatus stationStatus2 = new StationStatus();
+    System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        c.add(Calendar.DATE, 1);
-        date = c.getTime();
 
-        stationStatus1.setDate(date);
-        delivererPath.put("station2", stationStatus1);
-
-        c.setTime(date);
-        c.add(Calendar.DATE, 1);
-        date = c.getTime();
-
-        StationStatus stationStatus3 = new StationStatus();
-        stationStatus1.setDate(date);
-        delivererPath.put("station3", stationStatus1);
-
-        orderTrackingResponse.setDelivererPath(delivererPath);
-        return new ResponseEntity(orderTrackingResponse, HttpStatus.OK);
+        return orderTrackingRspDTO;
     }
 
 }
