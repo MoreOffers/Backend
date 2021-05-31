@@ -293,12 +293,6 @@ public class DelivererServiceImpl implements DelivererService {
         return orderTrackingRspDto;
     }
 
-    @Override
-    public Deliverer getDeliverer() {
-        return null;
-    }
-
-
 }
 
 

@@ -33,4 +33,7 @@ public class Deliverer {
     @Column(name = "equip_number", nullable = true)
     private String equip_id;
 
+    @Column(name = "is_available", nullable = true)
+    private Boolean is_available;
+
 }

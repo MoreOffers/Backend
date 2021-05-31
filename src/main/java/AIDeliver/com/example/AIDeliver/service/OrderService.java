@@ -13,7 +13,6 @@ public interface OrderService {
 
     String registerUserCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO);
     String visitorCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO);
-//    List<Orders> getHistorySalesOrders(Long userId);
     OrderHistoryDTO getHistorySalesOrdersByEmail(String email);
     Orders getSalesOrderBytrackingNumber(String trackingNumber);
 }
