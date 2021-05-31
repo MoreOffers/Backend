@@ -45,7 +45,6 @@ public class OrderServiceImpl implements OrderService {
         orders.setUser(user);
         delivererRepository.save(deliverer);
         deliverer.setIs_available(true);
-//        orders.setDeliverer(delivererRepository.findDelivererByType(modelMapper.map(selectedDTO, Deliverer.class).getType()));
         orders.setDeliverer(findAvailableDeliverer(selectedDTO.getType()));
         orders.setStatus(Constant.PENDING_STATUS);
         orders.setTrackingNumber(trackingNumber);
@@ -113,11 +112,6 @@ public class OrderServiceImpl implements OrderService {
 
         return  orderRepository.findOrdersByTrackingNumber(trackingNumber);
     }
-
-//    @Override
-//    public List<Orders> getHistorySalesOrders(Long userId) {
-//        return orderRepository.findSalesOrderByUserId(userId);
-//    }
 
     private String generateTrackingNumber() {
         return UUID.randomUUID().toString().substring(0, 15);

@@ -10,8 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface DelivererRepository extends JpaRepository<Deliverer, Long> {
-//    Deliverer findDelivererByType(String type);
-//    Deliverer findAvailableDeliverer(Boolean is_available);
+
     List<Deliverer> findAll();
 }
 

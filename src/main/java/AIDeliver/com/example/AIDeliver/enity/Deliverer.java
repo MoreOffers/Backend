@@ -14,10 +14,6 @@ public class Deliverer {
     @Column(name = "type", nullable = true)
     private String type;
 
-//    @OneToOne(targetEntity = Orders.class, cascade = CascadeType.ALL)
-//    @JoinColumn(name="deliverer_id", referencedColumnName = "id", nullable=true)
-//    private Orders orders;
-
     @Column(name = "equip_status", nullable = true)
     private Boolean equip_status;
 
