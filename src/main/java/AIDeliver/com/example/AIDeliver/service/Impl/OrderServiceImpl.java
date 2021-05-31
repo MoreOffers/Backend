@@ -37,11 +37,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public String registerUserCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
+    public String createOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
         String trackingNumber = generateTrackingNumber();
         Orders orders = modelMapper.map(orderDTO, Orders.class);
         User user = userRepository.findUserByEmail(userDTO.getEmail());
         Deliverer deliverer = modelMapper.map(selectedDTO, Deliverer.class);
+
+        if (user == null) {
+            user = modelMapper.map(userDTO, User.class);
+        }
+
         orders.setUser(user);
         delivererRepository.save(deliverer);
         deliverer.setIs_available(true);
@@ -64,19 +69,6 @@ public class OrderServiceImpl implements OrderService {
         return candidate;
     }
 
-    @Transactional
-    @Override
-    public String visitorCreateOrder(OrderDTO orderDTO, UserDTO userDTO, SelectedDTO selectedDTO) {
-        String trackingNumber = generateTrackingNumber();
-        Orders orders = modelMapper.map(orderDTO, Orders.class);
-        User user = modelMapper.map(userDTO, User.class);
-        user.setIsVisitor(true);
-        orders.setUser(user);
-        orders.setStatus(Constant.PENDING_STATUS);
-        orders.setTrackingNumber(trackingNumber);
-        orderRepository.save(orders);
-        return trackingNumber;
-    }
 
     @Override
     public OrderHistoryDTO getHistorySalesOrdersByEmail(String email) {

@@ -34,25 +34,14 @@ public class OrderController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/user/placeOrderConfirm")
-    public String userPlaceOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
-        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
-        UserDTO userDTO = placeOrderDTO.getUser();
-        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.registerUserCreateOrder(orderDTO, userDTO, selectedDTO);
-        return trackingNumer;
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/placeOrderConfirm")
+    @PostMapping(value={"/user/placeOrderConfirm", "/placeOrderConfirm"})
     public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
         SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.visitorCreateOrder(orderDTO, userDTO, selectedDTO);
+        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
         return trackingNumer;
     }
-
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/historyOrder")
