@@ -80,7 +80,7 @@ public class Orders {
     @Column(name = "weight")
     private String weight;
 
-    @Column
+    @Column(name = "size")
     private String size;
 
 }

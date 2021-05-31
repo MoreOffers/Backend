@@ -95,9 +95,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Orders getSalesOrderBytrackingNumber(String trackingNumber) {
-        System.out.println(trackingNumber + "trackingNumber-orderserviceimpl");
-//        System.out.println(orderRepository.findOrdersByTrackingNumber(trackingNumber).getTrackingNumber());
-//        System.out.println(orderRepository.findOrdersByTrackingNumber(trackingNumber).getTrackingNumber()+ "hhhhhhhhhhhh");
 
         return  orderRepository.findOrdersByTrackingNumber(trackingNumber);
     }

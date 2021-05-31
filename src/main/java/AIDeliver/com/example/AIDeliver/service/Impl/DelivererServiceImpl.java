@@ -78,136 +78,22 @@ public class DelivererServiceImpl implements DelivererService {
     }
 
 
-    public Map<String, DeliverStatusDTO> getDroneCurPath(List<Station> stations, Orders orders) {
-        int senderZip = Integer.valueOf(orders.getSenderZipCode());
-        int receiverZip = Integer.valueOf(orders.getReceiverZipCode());
 
-        String senderAddress = orders.getSenderAddress();
-        String receiverAddress = orders.getReceiverAddress();
+    public Map<String, DeliverStatusDTO> getDelivererCurPath(List<Station> stations, Orders orders) {
+        Deliverer deliverer = orders.getDeliverer();
+        String type = deliverer.getType();
 
-        String start = orders.getCreateTime();
-        String time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
-        String end = time.substring(0, 16);
+        int[] gapArray;
+        int gap;
 
-        String startsub = start.substring(0, 13);
-        String endsub = end.substring(0, 13);
-        String[] startTime = startsub.split("-");
-
-        int startH = Integer.valueOf(startTime[3]);
-        int endH = Integer.valueOf(endsub.split("-")[3]);
-
-        //<status, address & time>
-        Map<String, DeliverStatusDTO> result = new HashMap<>();
-        String status1 = "Stage1";
-        String status2 = "Stage2";
-        String status3 = "Stage3";
-        String status4 = "Stage4";
-
-        DeliverStatusDTO dStatus1 = new DeliverStatusDTO();
-        DeliverStatusDTO dStatus2 = new DeliverStatusDTO();
-        DeliverStatusDTO dStatus3 = new DeliverStatusDTO();
-        DeliverStatusDTO dStatus4 = new DeliverStatusDTO();
-
-
-        String addressA = tracking(stations, senderZip);
-        String addressB = tracking(stations, receiverZip);
-
-        if (endH - startH < 3) {
-            dStatus1.setTime(end);
-            dStatus1.setAddress(senderAddress);
-            result.put(status1, dStatus1);
-        } else if (endH - startH < 6) {
-            if (result.containsKey(status1)) {
-                result.remove(status1);
-            } else {
-                int temp = Integer.valueOf(startTime[3])+3;
-                startTime[3] = String.valueOf(temp);
-                String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
-                dStatus1.setTime(tempTime);
-                dStatus1.setAddress(senderAddress);
-                result.put(status1, dStatus1);
-            }
-
-            //String address = tracking(stations, senderZip);
-            dStatus2.setTime(end);
-            dStatus2.setAddress(addressA);
-            result.put(status2, dStatus2);
-        } else if (endH - startH < 8) {
-            if (result.containsKey(status1)) {
-                result.remove(status1);
-            } else {
-                int temp = Integer.valueOf(startTime[3])+3;
-                startTime[3] = String.valueOf(temp);
-                String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
-                dStatus1.setTime(tempTime);
-                dStatus1.setAddress(senderAddress);
-                result.put(status1, dStatus1);
-            }
-            //stationOne
-            if (result.containsKey(status2)) {
-                result.remove(status2);
-            } else {
-                int temp = Integer.valueOf(startTime[3]) + 3;
-                startTime[3] = String.valueOf(temp);
-                String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
-                dStatus2.setTime(tempTime);
-                dStatus2.setAddress(addressA);
-                result.put(status2, dStatus2);
-            }
-
-            //String address = tracking(stations, receiverZip);
-            dStatus3.setTime(end);
-            dStatus3.setAddress(addressB);
-            result.put(status3, dStatus3);
-
+        if (type == "Drone") {
+            gapArray = new int[]{3, 6, 9};
+            gap = 3;
         } else {
-            if (result.containsKey(status1)) {
-                result.remove(status1);
-            } else {
-                int temp = Integer.valueOf(startTime[3])+3;
-                startTime[3] = String.valueOf(temp);
-                String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
-                dStatus1.setTime(tempTime);
-                dStatus1.setAddress(senderAddress);
-                result.put(status1, dStatus1);
-            }
-            //stationOne
-            if (result.containsKey(status2)) {
-                result.remove(status2);
-            } else {
-                int temp = Integer.valueOf(startTime[3]) + 3;
-                startTime[3] = String.valueOf(temp);
-                String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
-                dStatus2.setTime(tempTime);
-                dStatus2.setAddress(addressA);
-                result.put(status2, dStatus2);
-            }
-            //statoinTwo
-            if (result.containsKey(status3)) {
-                result.remove(status3);
-            } else { //update time
-                int temp = Integer.valueOf(startTime[3]) + 3;
-                startTime[3] = String.valueOf(temp);
-                String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
-                dStatus3.setTime(tempTime);
-                dStatus3.setAddress(addressB);
-                result.put(status3, dStatus3);
-            }
-
-            int temp = Integer.valueOf(startTime[3]) + 3;
-            startTime[3] = String.valueOf(temp);
-            String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
-            dStatus4.setTime(tempTime);
-            dStatus4.setAddress(receiverAddress);
-            result.put(status4, dStatus4);
+            gapArray = new int[]{5, 10, 15};
+            gap = 5;
         }
 
-        return result;
-
-    }
-
-
-    public Map<String, DeliverStatusDTO> getRobotCurPath(List<Station> stations, Orders orders) {
         int senderZip = Integer.valueOf(orders.getSenderZipCode());
         int receiverZip = Integer.valueOf(orders.getReceiverZipCode());
 
@@ -247,15 +133,15 @@ public class DelivererServiceImpl implements DelivererService {
             endH += 24;
         }
 
-        if (endH - startH < 5) {
+        if (endH - startH < gapArray[0]) {
             dStatus1.setTime(end);
             dStatus1.setAddress(senderAddress);
             result.put(status1, dStatus1);
-        } else if (endH - startH < 10) {
+        } else if (endH - startH < gapArray[1]) {
             if (result.containsKey(status1)) {
                 result.remove(status1);
             } else {
-                int temp = Integer.valueOf(startTime[3])+5;
+                int temp = Integer.valueOf(startTime[3]) + gap;
                 startTime[3] = String.valueOf(temp);
                 String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
                 dStatus1.setTime(tempTime);
@@ -266,11 +152,11 @@ public class DelivererServiceImpl implements DelivererService {
             dStatus2.setTime(end);
             dStatus2.setAddress(addressA);
             result.put(status2, dStatus2);
-        } else if (endH - startH < 15) {
+        } else if (endH - startH < gapArray[2]) {
             if (result.containsKey(status1)) {
                 result.remove(status1);
             } else {
-                int temp = Integer.valueOf(startTime[3])+5;
+                int temp = Integer.valueOf(startTime[3]) + gap;
                 startTime[3] = String.valueOf(temp);
                 String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
                 dStatus1.setTime(tempTime);
@@ -281,7 +167,7 @@ public class DelivererServiceImpl implements DelivererService {
             if (result.containsKey(status2)) {
                 result.remove(status2);
             } else {
-                int temp = Integer.valueOf(startTime[3]) + 5;
+                int temp = Integer.valueOf(startTime[3]) + gap;
                 if (temp >= 24) {
                     temp = temp -24;
                     int tempDate = Integer.valueOf(startTime[2]) + 1;
@@ -303,7 +189,7 @@ public class DelivererServiceImpl implements DelivererService {
             if (result.containsKey(status1)) {
                 result.remove(status1);
             } else {
-                int temp = Integer.valueOf(startTime[3]) + 5;
+                int temp = Integer.valueOf(startTime[3]) + gap;
                 startTime[3] = String.valueOf(temp);
                 String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
                 dStatus1.setTime(tempTime);
@@ -314,7 +200,7 @@ public class DelivererServiceImpl implements DelivererService {
             if (result.containsKey(status2)) {
                 result.remove(status2);
             } else {
-                int temp = Integer.valueOf(startTime[3]) + 5;
+                int temp = Integer.valueOf(startTime[3]) + gap;
                 if (temp >= 24) {
                     temp = temp -24;
                     int tempDate = Integer.valueOf(startTime[2]) + 1;
@@ -330,7 +216,7 @@ public class DelivererServiceImpl implements DelivererService {
             if (result.containsKey(status3)) {
                 result.remove(status3);
             } else { //update time
-                int temp = Integer.valueOf(startTime[3]) + 5;
+                int temp = Integer.valueOf(startTime[3]) + gap;
                 if (temp >= 24) {
                     temp = temp -24;
                     int tempDate = Integer.valueOf(startTime[2]) + 1;
@@ -343,7 +229,7 @@ public class DelivererServiceImpl implements DelivererService {
                 result.put(status3, dStatus3);
             }
 
-            int temp = Integer.valueOf(startTime[3]) + 5;
+            int temp = Integer.valueOf(startTime[3]) + gap;
             startTime[3] = String.valueOf(temp);
             String tempTime = startTime[0] + "-" + startTime[1] + "-" + startTime[2] + "-" + startTime[3] + ":" + "00";
             dStatus4.setTime(tempTime);
@@ -373,7 +259,7 @@ public class DelivererServiceImpl implements DelivererService {
             time[3] = String.valueOf(temp);
             String arriveTime = time[0] + "-" + time[1] + "-" + time[2] + "-" + time[3] + ":" + "00";
             orderTrackingRspDto.setArriveTime(arriveTime);
-            orderTrackingRspDto.setDelivererPath(getDroneCurPath(stations, orders));
+            orderTrackingRspDto.setDelivererPath(getDelivererCurPath(stations, orders));
         } else {
             int temp = Integer.valueOf(time[3]) + 22 -24;
             int tempD = Integer.valueOf(time[2]) + 1;
@@ -381,7 +267,7 @@ public class DelivererServiceImpl implements DelivererService {
             time[3] = String.valueOf(temp);
             String arriveTime = time[0] + "-" + time[1] + "-" + time[2] + "-" + time[3] + ":" + "00";
             orderTrackingRspDto.setArriveTime(arriveTime);
-            orderTrackingRspDto.setDelivererPath(getRobotCurPath(stations, orders));
+            orderTrackingRspDto.setDelivererPath(getDelivererCurPath(stations, orders));
         }
         Map<String, DeliverStatusDTO> delivererPath = new HashMap<>();
         delivererPath = orderTrackingRspDto.getDelivererPath();
