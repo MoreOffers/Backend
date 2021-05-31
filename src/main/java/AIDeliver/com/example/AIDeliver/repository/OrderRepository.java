@@ -8,15 +8,5 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Orders, Long> {
-
-//    Orders createOrder(OrderInfoRequest orderInfo, Selected option, User user);
-
-//    List<Orders> findSalesOrdersByUserId(User userId);
-//
-//    Optional<Orders> findSalesOrderById(Long salesOrderId);
-//
-//    String findSalesOrderStatusById(Long salesOrderId);
-
     List<Orders> findSalesOrderByUserId(Long id);
-
 }

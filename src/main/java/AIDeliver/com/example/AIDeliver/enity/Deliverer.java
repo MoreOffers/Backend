@@ -33,16 +33,4 @@ public class Deliverer {
     @Column(name = "equip_number", nullable = true)
     private String equip_id;
 
-    //add station
-//    @ManyToOne
-//    private Station station;
-
-    /*
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-     */
-
-
-
 }

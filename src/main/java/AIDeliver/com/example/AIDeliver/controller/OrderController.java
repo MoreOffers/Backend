@@ -1,16 +1,12 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
 import AIDeliver.com.example.AIDeliver.common.util.Constant;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderHistoryRequest;
+import AIDeliver.com.example.AIDeliver.dto.*;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
 import AIDeliver.com.example.AIDeliver.dto.request.OrderTrackingRequest;
-import AIDeliver.com.example.AIDeliver.dto.response.OrderHistoryResponse;
 import AIDeliver.com.example.AIDeliver.dto.response.OrderTrackingResponse;
 import AIDeliver.com.example.AIDeliver.dto.response.Selected;
 import AIDeliver.com.example.AIDeliver.dto.response.StationStatus;
-import AIDeliver.com.example.AIDeliver.enity.Orders;
-import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
 import AIDeliver.com.example.AIDeliver.service.UserService;
@@ -58,41 +54,33 @@ public class OrderController {
 
     }
 
-    // registered customer
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/user/placeOrderConfirm")
+    public String userPlaceOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
+        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
+        UserDTO userDTO = placeOrderDTO.getUser();
+        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
+        String trackingNumer = orderService.registerUserCreateOrder(orderDTO, userDTO, selectedDTO);
+        return trackingNumer;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/placeOrderConfirm")
-    public String placeOrder(@RequestBody OrderConfirmationRequest orderConfirmationRequest){
-        String trackingNumer = orderService.createOrder(orderConfirmationRequest);
+    public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
+        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
+        UserDTO userDTO = placeOrderDTO.getUser();
+        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
+        String trackingNumer = orderService.visitorCreateOrder(orderDTO, userDTO, selectedDTO);
         return trackingNumer;
     }
 
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/historyOrder")
-    public ResponseEntity<OrderHistoryResponse> findAllOrders(@RequestBody OrderHistoryRequest orderHistoryRequest){
-        User user = userService.findUserByEmail(orderHistoryRequest.getEmail());
-        List<Orders> orders = orderService.getHistorySalesOrders(user.getId());
-
-        OrderHistoryResponse orderHistoryResponse = new OrderHistoryResponse();
-        Map<String,List<Orders>> pendingOrders = new HashMap<>();
-        Map<String,List<Orders>> completedOrders = new HashMap<>();
-
-        pendingOrders.put("pending", new ArrayList<>());
-        completedOrders.put("completed", new ArrayList<>());
-
-        for (Orders order : orders) {
-            String status = order.getOrderStatus();
-            if (status.toLowerCase() != "completed") {
-                pendingOrders.get("pending").add(order);
-            } else {
-                completedOrders.get("pending").add(order);
-            }
-        }
-
-        orderHistoryResponse.setPending(pendingOrders);
-        orderHistoryResponse.setCompleted(completedOrders);
-
-        return new ResponseEntity<>(orderHistoryResponse, HttpStatus.OK);
+    public OrderHistoryDTO findAllOrders(@RequestBody UserDTO userDTO){
+        String email = userDTO.getEmail();
+        return orderService.getHistorySalesOrdersByEmail(email);
     }
-
 
     @GetMapping( value = { "/user/tracking","tracking" })
     public ResponseEntity<OrderTrackingResponse> OrderTracking (@RequestBody OrderTrackingRequest orderTrackingRequest){

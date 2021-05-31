@@ -1,4 +1,4 @@
-package AIDeliver.com.example.AIDeliver.service.Impl;
+package AIDeliver.com.example.AIDeliver.common.util;
 
 import java.util.HashMap;
 import java.util.Map;
