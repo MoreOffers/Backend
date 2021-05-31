@@ -35,6 +35,16 @@ public class OrderController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value={"/user/placeOrderConfirm", "/placeOrderConfirm"})
+    public String userPlaceOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
+        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
+        UserDTO userDTO = placeOrderDTO.getUser();
+        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
+        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
+        return trackingNumer;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping()
     public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
@@ -42,6 +52,7 @@ public class OrderController {
         String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
         return trackingNumer;
     }
+
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/historyOrder")
