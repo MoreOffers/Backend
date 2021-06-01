@@ -5,3 +5,6 @@ env_variables:
 handlers:
   - url: /.*
     script: this field is required, but ignored
+automatic_scaling:
+  target_cpu_utilization: 0.5
+  max_instances: 5

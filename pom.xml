@@ -87,6 +87,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.9</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -103,20 +108,19 @@
 
 		<plugins>
 
-<!--			deployment usage-->
-<!--			<plugin>-->
-<!--				<groupId>com.google.cloud.tools</groupId>-->
-<!--				<artifactId>appengine-maven-plugin</artifactId>-->
-<!--				<version>2.2.0</version>-->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>2.2.0</version>
 
-<!--				<configuration>-->
-<!--					<stage.enableJarSplitting>true</stage.enableJarSplitting>-->
-<!--					<deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>-->
-<!--					<deploy.projectId>ai-deliver</deploy.projectId>-->
-<!--					<deploy.version>6-beta</deploy.version>-->
-<!--					<cloudSdkPath></cloudSdkPath>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
+				<configuration>
+					<stage.enableJarSplitting>true</stage.enableJarSplitting>
+					<deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
+					<deploy.projectId>ai-deliver</deploy.projectId>
+					<deploy.version>release-1</deploy.version>
+					<cloudSdkPath></cloudSdkPath>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

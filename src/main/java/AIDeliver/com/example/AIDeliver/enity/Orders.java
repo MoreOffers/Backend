@@ -1,5 +1,6 @@
 package AIDeliver.com.example.AIDeliver.enity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,21 +14,18 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String trackingNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER,  cascade=CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
-
-//    @OneToOne(fetch = FetchType.LAZY, optional = false)
-//    @Column(name = "deliverer_id", nullable = false)
-//    private Long delivererid;
-
+    @JsonIgnore
     @OneToOne(targetEntity = Deliverer.class, cascade = CascadeType.ALL)
     @JoinColumn(name="deliverer_id", referencedColumnName = "id", nullable=true)
     private Deliverer deliverer;
@@ -56,13 +54,12 @@ public class Orders {
     @Column(name = "receiver_zipCode", nullable = true)
     private String receiverZipCode;
 
-    @Column(name = "order_status", nullable = true)
-    private String orderStatus;
+    @Column(name = "status", nullable = true)
+    private String status = "pending";
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+
     @Column(name = "create_time", nullable = true)
-    private Date createTime;
+    private String createTime;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -81,9 +78,9 @@ public class Orders {
     private String paymentCard;
 
     @Column(name = "weight")
-    private Double weight;
+    private String weight;
 
-    @Column
+    @Column(name = "size")
     private String size;
 
 }
