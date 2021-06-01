@@ -42,13 +42,13 @@ public class OrderController {
         return trackingNumer;
     }
 
-    @GetMapping(path = "/historyOrder")
+    @PostMapping(path = "/historyOrder")
     public ResponseEntity<OrderHistoryDTO> findAllOrders(@RequestBody UserDTO userDTO){
         String email = userDTO.getEmail();
         return new ResponseEntity<>(orderService.getHistorySalesOrdersByEmail(email), HttpStatus.OK);
     }
 
-    @GetMapping( value = { "/user/tracking", "/tracking" })
+    @PostMapping( value = { "/user/tracking", "/tracking" })
     public ResponseEntity<OrderTrackingRspDTO> OrderTracking (@RequestBody OrderTrackingRstDTO orderTrackingRstDTO){
 
         String trackingNumber = orderTrackingRstDTO.getTrackingNumber();
