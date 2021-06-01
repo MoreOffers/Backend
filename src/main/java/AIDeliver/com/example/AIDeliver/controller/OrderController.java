@@ -48,17 +48,15 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getHistorySalesOrdersByEmail(email), HttpStatus.OK);
     }
 
-    @GetMapping( value = { "/tracking" })
-    public ResponseEntity<OrderTrackingRspDTO> OrderTracking (@RequestBody Map<String, String> trackingrequest){
+    @GetMapping( value = { "/user/tracking", "/tracking" })
+    public ResponseEntity<OrderTrackingRspDTO> OrderTracking (@RequestBody OrderTrackingRstDTO orderTrackingRstDTO){
 
-        String trackingNumber = trackingrequest.get("trackingNumber");
-        System.out.println(trackingNumber + "controller");
+        String trackingNumber = orderTrackingRstDTO.getTrackingNumber();
         OrderTrackingRspDTO orderTrackingRspDTO;
 
         Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
 
         orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
-        System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
 
         return new ResponseEntity<>(orderTrackingRspDTO, HttpStatus.OK);
     }
