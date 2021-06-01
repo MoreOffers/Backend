@@ -1,16 +1,7 @@
 package AIDeliver.com.example.AIDeliver.controller;
 
-import AIDeliver.com.example.AIDeliver.common.util.Constant;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderConfirmationRequest;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderHistoryRequest;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderInfoRequest;
-import AIDeliver.com.example.AIDeliver.dto.request.OrderTrackingRequest;
-import AIDeliver.com.example.AIDeliver.dto.response.OrderHistoryResponse;
-import AIDeliver.com.example.AIDeliver.dto.response.OrderTrackingResponse;
-import AIDeliver.com.example.AIDeliver.dto.response.Selected;
-import AIDeliver.com.example.AIDeliver.dto.response.StationStatus;
+import AIDeliver.com.example.AIDeliver.dto.*;
 import AIDeliver.com.example.AIDeliver.enity.Orders;
-import AIDeliver.com.example.AIDeliver.enity.User;
 import AIDeliver.com.example.AIDeliver.service.DelivererService;
 import AIDeliver.com.example.AIDeliver.service.OrderService;
 import AIDeliver.com.example.AIDeliver.service.UserService;
@@ -35,98 +26,55 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/placeOrderQuote")
-    public ResponseEntity<List<Selected>> quote(@RequestBody OrderInfoRequest orderInfoRequest) {
-
-        Double robotPrice = delivererService.getRobotEstimatePrice(orderInfoRequest);
-        Double dronePrice = delivererService.getDroneEstimatePrice(orderInfoRequest);
-
-        List<Selected> res = new ArrayList<>();
-
-        Selected robotOpt = new Selected();
-        robotOpt.setOption(Constant.Robot);
-        robotOpt.setPrice(robotPrice);
-
-        Selected droneOpt = new Selected();
-        droneOpt.setOption(Constant.Drone);
-        droneOpt.setPrice(dronePrice);
-
-        res.add(robotOpt);
-        res.add(droneOpt);
-
+    public ResponseEntity<OrderQuoteRspDTO> quote(@RequestBody PlaceOrderDTO placeOrderDTO) {
+        OrderQuoteRspDTO res = delivererService.getOptionQuote(placeOrderDTO.getOrderInfo());
         return new ResponseEntity<>(res, HttpStatus.OK);
-
     }
 
-    // registered customer
-    @PostMapping("/placeOrderConfirm")
-    public String placeOrder(@RequestBody OrderConfirmationRequest orderConfirmationRequest){
-        String trackingNumer = orderService.createOrder(orderConfirmationRequest);
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value={"/user/placeOrderConfirm", "/placeOrderConfirm"})
+    public String userPlaceOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
+        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
+        UserDTO userDTO = placeOrderDTO.getUser();
+        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
+        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
+        return trackingNumer;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping()
+    public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
+        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
+        UserDTO userDTO = placeOrderDTO.getUser();
+        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
+        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
         return trackingNumer;
     }
 
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/historyOrder")
-    public ResponseEntity<OrderHistoryResponse> findAllOrders(@RequestBody OrderHistoryRequest orderHistoryRequest){
-        User user = userService.findUserByEmail(orderHistoryRequest.getEmail());
-        List<Orders> orders = orderService.getHistorySalesOrders(user.getId());
-
-        OrderHistoryResponse orderHistoryResponse = new OrderHistoryResponse();
-        Map<String,List<Orders>> pendingOrders = new HashMap<>();
-        Map<String,List<Orders>> completedOrders = new HashMap<>();
-
-        pendingOrders.put("pending", new ArrayList<>());
-        completedOrders.put("completed", new ArrayList<>());
-
-        for (Orders order : orders) {
-            String status = order.getOrderStatus();
-            if (status.toLowerCase() != "completed") {
-                pendingOrders.get("pending").add(order);
-            } else {
-                completedOrders.get("pending").add(order);
-            }
-        }
-
-        orderHistoryResponse.setPending(pendingOrders);
-        orderHistoryResponse.setCompleted(completedOrders);
-
-        return new ResponseEntity<>(orderHistoryResponse, HttpStatus.OK);
+    public OrderHistoryDTO findAllOrders(@RequestBody UserDTO userDTO){
+        String email = userDTO.getEmail();
+        return orderService.getHistorySalesOrdersByEmail(email);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping( value = { "/tracking" })
+    public OrderTrackingRspDTO OrderTracking (@RequestBody Map<String, String> trackingrequest){
 
-    @GetMapping( value = { "/user/tracking","tracking" })
-    public ResponseEntity<OrderTrackingResponse> OrderTracking (@RequestBody OrderTrackingRequest orderTrackingRequest){
-        String trackingNumber = orderTrackingRequest.getTrackingNumber();
-        OrderTrackingResponse orderTrackingResponse = new OrderTrackingResponse();
-        Map<String, StationStatus> delivererPath = new HashMap<>();
+        String trackingNumber = trackingrequest.get("trackingNumber");
+        System.out.println(trackingNumber + "controller");
+        OrderTrackingRspDTO orderTrackingRspDTO;
 
-        Date date = new Date();
+        Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
 
-        StationStatus stationStatus1 = new StationStatus();
-        stationStatus1.setStatus("departed");
-        stationStatus1.setDate(date);
-        delivererPath.put("station1", stationStatus1);
+        orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
+        System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
 
-        StationStatus stationStatus2 = new StationStatus();
-
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        c.add(Calendar.DATE, 1);
-        date = c.getTime();
-
-        stationStatus1.setDate(date);
-        delivererPath.put("station2", stationStatus1);
-
-        c.setTime(date);
-        c.add(Calendar.DATE, 1);
-        date = c.getTime();
-
-        StationStatus stationStatus3 = new StationStatus();
-        stationStatus1.setDate(date);
-        delivererPath.put("station3", stationStatus1);
-
-        orderTrackingResponse.setDelivererPath(delivererPath);
-        return new ResponseEntity(orderTrackingResponse, HttpStatus.OK);
+        return orderTrackingRspDTO;
     }
 
 }
