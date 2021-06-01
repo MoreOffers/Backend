@@ -26,7 +26,6 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/placeOrderQuote")
     public ResponseEntity<OrderQuoteRspDTO> quote(@RequestBody PlaceOrderDTO placeOrderDTO) {
         OrderQuoteRspDTO res = delivererService.getOptionQuote(placeOrderDTO.getOrderInfo());
@@ -43,27 +42,14 @@ public class OrderController {
         return trackingNumer;
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping()
-    public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
-        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
-        UserDTO userDTO = placeOrderDTO.getUser();
-        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
-        return trackingNumer;
-    }
-
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/historyOrder")
-    public OrderHistoryDTO findAllOrders(@RequestBody UserDTO userDTO){
+    @GetMapping(path = "/historyOrder")
+    public ResponseEntity<OrderHistoryDTO> findAllOrders(@RequestBody UserDTO userDTO){
         String email = userDTO.getEmail();
-        return orderService.getHistorySalesOrdersByEmail(email);
+        return new ResponseEntity<>(orderService.getHistorySalesOrdersByEmail(email), HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping( value = { "/tracking" })
-    public OrderTrackingRspDTO OrderTracking (@RequestBody Map<String, String> trackingrequest){
+    public ResponseEntity<OrderTrackingRspDTO> OrderTracking (@RequestBody Map<String, String> trackingrequest){
 
         String trackingNumber = trackingrequest.get("trackingNumber");
         System.out.println(trackingNumber + "controller");
@@ -74,7 +60,7 @@ public class OrderController {
         orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
         System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
 
-        return orderTrackingRspDTO;
+        return new ResponseEntity<>(orderTrackingRspDTO, HttpStatus.OK);
     }
 
 }
