@@ -114,7 +114,7 @@
 <!--					<deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>-->
 <!--					<deploy.projectId>ai-deliver</deploy.projectId>-->
 <!--					<deploy.version>6-beta</deploy.version>-->
-<!--					<cloudSdkPath>/Users/Alina.Huang@ibm.com/Desktop/projects/google-cloud-sdk</cloudSdkPath>-->
+<!--					<cloudSdkPath></cloudSdkPath>-->
 <!--				</configuration>-->
 <!--			</plugin>-->
 
