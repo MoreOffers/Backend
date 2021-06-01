@@ -108,7 +108,6 @@
 
 		<plugins>
 
-<!--			deployment usage-->
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
