@@ -38,8 +38,8 @@ public class OrderController {
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
         SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
-        return trackingNumer;
+        String trackingNumber = orderService.createOrder(orderDTO, userDTO, selectedDTO);
+        return trackingNumber;
     }
 
     @PostMapping(path = "/historyOrder")
