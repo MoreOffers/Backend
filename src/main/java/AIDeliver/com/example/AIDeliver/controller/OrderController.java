@@ -38,8 +38,8 @@ public class OrderController {
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
         SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
-        return trackingNumer;
+        String trackingNumber = orderService.createOrder(orderDTO, userDTO, selectedDTO);
+        return trackingNumber;
     }
 
     @PostMapping(path = "/historyOrder")
@@ -52,13 +52,10 @@ public class OrderController {
     public ResponseEntity<OrderTrackingRspDTO> OrderTracking (@RequestBody OrderTrackingRstDTO orderTrackingRstDTO){
 
         String trackingNumber = orderTrackingRstDTO.getTrackingNumber();
-        OrderTrackingRspDTO orderTrackingRspDTO;
-
         Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
-
-        orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
-
+        OrderTrackingRspDTO orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
         return new ResponseEntity<>(orderTrackingRspDTO, HttpStatus.OK);
+
     }
 
 }
