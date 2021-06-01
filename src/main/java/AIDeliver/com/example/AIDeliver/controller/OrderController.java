@@ -52,13 +52,10 @@ public class OrderController {
     public ResponseEntity<OrderTrackingRspDTO> OrderTracking (@RequestBody OrderTrackingRstDTO orderTrackingRstDTO){
 
         String trackingNumber = orderTrackingRstDTO.getTrackingNumber();
-        OrderTrackingRspDTO orderTrackingRspDTO;
-
         Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
-
-        orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
-
+        OrderTrackingRspDTO orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
         return new ResponseEntity<>(orderTrackingRspDTO, HttpStatus.OK);
+
     }
 
 }
