@@ -14,7 +14,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping(path = "order")
-
+@CrossOrigin
 public class OrderController {
 
     @Autowired
@@ -27,6 +27,7 @@ public class OrderController {
     private UserService userService;
 
     @PostMapping(path = "/placeOrderQuote")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<OrderQuoteRspDTO> quote(@RequestBody PlaceOrderDTO placeOrderDTO) {
         OrderQuoteRspDTO res = delivererService.getOptionQuote(placeOrderDTO.getOrderInfo());
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -34,6 +35,7 @@ public class OrderController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value={"/user/placeOrderConfirm", "/placeOrderConfirm"})
+    @CrossOrigin(origins = "*")
     public String userPlaceOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
@@ -43,12 +45,14 @@ public class OrderController {
     }
 
     @PostMapping(path = "/historyOrder")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<OrderHistoryDTO> findAllOrders(@RequestBody UserDTO userDTO){
         String email = userDTO.getEmail();
         return new ResponseEntity<>(orderService.getHistorySalesOrdersByEmail(email), HttpStatus.OK);
     }
 
     @PostMapping( value = { "/user/tracking", "/tracking" })
+    @CrossOrigin(origins = "*")
     public ResponseEntity<OrderTrackingRspDTO> OrderTracking (@RequestBody OrderTrackingRstDTO orderTrackingRstDTO){
 
         String trackingNumber = orderTrackingRstDTO.getTrackingNumber();

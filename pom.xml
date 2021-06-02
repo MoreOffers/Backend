@@ -99,6 +99,12 @@
 			<version>5.2.3.Final</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.cloud.functions</groupId>
+			<artifactId>functions-framework-api</artifactId>
+			<version>1.0.4</version>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -118,7 +124,7 @@
 					<deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
 					<deploy.projectId>ai-deliver</deploy.projectId>
 					<deploy.version>release-1</deploy.version>
-					<cloudSdkPath></cloudSdkPath>
+					<cloudSdkPath>/Users/Alina.Huang@ibm.com/Desktop/projects/google-cloud-sdk</cloudSdkPath>
 				</configuration>
 			</plugin>
 
@@ -134,6 +140,24 @@
 					</execution>
 				</executions>
 
+			</plugin>
+
+			<plugin>
+				<!--
+                  Google Cloud Functions Framework Maven plugin
+
+                  This plugin allows you to run Cloud Functions Java code
+                  locally. Use the following terminal command to run a
+                  given function locally:
+
+                  mvn function:run -Drun.functionTarget=your.package.yourFunction
+                -->
+				<groupId>com.google.cloud.functions</groupId>
+				<artifactId>function-maven-plugin</artifactId>
+				<version>0.9.7</version>
+				<configuration>
+					<functionTarget>functions.HelloWorld</functionTarget>
+				</configuration>
 			</plugin>
 
 		</plugins>
