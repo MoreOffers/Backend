@@ -29,7 +29,6 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping(path = "/login")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<User> login(@RequestBody UserDTO userDTO) {
 
         ResponseEntity<User> response = new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
@@ -50,13 +49,11 @@ public class UserController {
     }
 
     @GetMapping(path = "/getUser")
-    @CrossOrigin(origins = "*")
     public List<User> getUser() {
         return userService.getUsers();
     }
 
     @PostMapping(path = "/register")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
 
         ResponseEntity<String> response = null;
@@ -71,7 +68,6 @@ public class UserController {
 
 
     @PostMapping(path = "/update")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<String> updateProfile(@RequestBody UserDTO userDTO) {
 
         ResponseEntity<String> response = null;
@@ -85,7 +81,6 @@ public class UserController {
     }
 
     @DeleteMapping(path="{userId}")
-    @CrossOrigin(origins = "*")
     public void deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
     }
