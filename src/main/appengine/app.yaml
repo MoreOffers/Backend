@@ -6,6 +6,13 @@ env_variables:
 handlers:
   - url: /.*
     script: this field is required, but ignored
+
+#  - url: /.*
+#    static_dir: .
+#    http_headers:
+#      Access-Control-Allow-Origin: '*'
+
+
 automatic_scaling:
   target_cpu_utilization: 0.6
   max_instances: 10
