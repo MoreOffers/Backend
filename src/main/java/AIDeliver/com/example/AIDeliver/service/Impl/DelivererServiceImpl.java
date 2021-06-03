@@ -78,7 +78,6 @@ public class DelivererServiceImpl implements DelivererService {
     }
 
 
-
     private Map<String, DeliverStatusDTO> getDelivererCurPath(List<Station> stations, Orders orders, String type) {
         int[] gapArray; int gap;
 
@@ -224,8 +223,6 @@ public class DelivererServiceImpl implements DelivererService {
         orderTrackingRspDTO.setArriveTime(arriveTime);
         return orderTrackingRspDTO;
     }
-
-
 
 
 }

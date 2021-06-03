@@ -114,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
 
         for (Orders order : orders) {
             String status = order.getStatus();
-            if (status.toLowerCase() != Constant.PENDING_STATUS) {
+            if (status.toLowerCase() == Constant.PENDING_STATUS) {
                 pendingList.add(order);
             } else {
                 completedList.add(order);
