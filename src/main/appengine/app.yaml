@@ -1,5 +1,5 @@
 runtime: java11
-instance_class: B2
+#instance_class: B2
 
 env_variables:
   SPRING_PROFILES_ACTIVE: "gcp,mysql"
@@ -7,5 +7,5 @@ handlers:
   - url: /.*
     script: this field is required, but ignored
 automatic_scaling:
-  target_cpu_utilization: 0.95
+  target_cpu_utilization: 0.6
   max_instances: 10
