@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "user")
-
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/login")
+    @PostMapping(path = "/login")
     public ResponseEntity<User> login(@RequestBody UserDTO userDTO) {
 
         ResponseEntity<User> response = new ResponseEntity<>(null, HttpStatus.FORBIDDEN);

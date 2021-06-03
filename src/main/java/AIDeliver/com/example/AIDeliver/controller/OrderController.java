@@ -14,7 +14,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping(path = "order")
-
+@CrossOrigin
 public class OrderController {
 
     @Autowired
@@ -26,7 +26,6 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/placeOrderQuote")
     public ResponseEntity<OrderQuoteRspDTO> quote(@RequestBody PlaceOrderDTO placeOrderDTO) {
         OrderQuoteRspDTO res = delivererService.getOptionQuote(placeOrderDTO.getOrderInfo());
@@ -39,42 +38,24 @@ public class OrderController {
         OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
         UserDTO userDTO = placeOrderDTO.getUser();
         SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
-        return trackingNumer;
+        String trackingNumber = orderService.createOrder(orderDTO, userDTO, selectedDTO);
+        return trackingNumber;
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping()
-    public String placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO){
-        OrderDTO orderDTO = placeOrderDTO.getOrderInfo();
-        UserDTO userDTO = placeOrderDTO.getUser();
-        SelectedDTO selectedDTO = placeOrderDTO.getSelected();
-        String trackingNumer = orderService.createOrder(orderDTO, userDTO, selectedDTO);
-        return trackingNumer;
-    }
-
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/historyOrder")
-    public OrderHistoryDTO findAllOrders(@RequestBody UserDTO userDTO){
+    @PostMapping(path = "/historyOrder")
+    public ResponseEntity<OrderHistoryDTO> findAllOrders(@RequestBody UserDTO userDTO){
         String email = userDTO.getEmail();
-        return orderService.getHistorySalesOrdersByEmail(email);
+        return new ResponseEntity<>(orderService.getHistorySalesOrdersByEmail(email), HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping( value = { "/tracking" })
-    public OrderTrackingRspDTO OrderTracking (@RequestBody Map<String, String> trackingrequest){
+    @PostMapping( value = { "/user/tracking", "/tracking" })
+    public ResponseEntity<OrderTrackingRspDTO> OrderTracking (@RequestBody OrderTrackingRstDTO orderTrackingRstDTO){
 
-        String trackingNumber = trackingrequest.get("trackingNumber");
-        System.out.println(trackingNumber + "controller");
-        OrderTrackingRspDTO orderTrackingRspDTO;
-
+        String trackingNumber = orderTrackingRstDTO.getTrackingNumber();
         Orders orders = orderService.getSalesOrderBytrackingNumber(trackingNumber);
+        OrderTrackingRspDTO orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
+        return new ResponseEntity<>(orderTrackingRspDTO, HttpStatus.OK);
 
-        orderTrackingRspDTO = delivererService.getTrackingInfo(orders,trackingNumber);
-        System.out.println(orderTrackingRspDTO.getTrackingNumber()+"sadfsdafsadf");
-
-        return orderTrackingRspDTO;
     }
 
 }
