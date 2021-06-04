@@ -14,7 +14,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping(path = "order")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class OrderController {
 
     @Autowired
