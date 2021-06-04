@@ -1,17 +1,10 @@
 runtime: java11
-#instance_class: B2
 
 env_variables:
   SPRING_PROFILES_ACTIVE: "gcp,mysql"
 handlers:
   - url: /.*
     script: this field is required, but ignored
-
-#  - url: /.*
-#    static_dir: .
-#    http_headers:
-#      Access-Control-Allow-Origin: '*'
-
 
 automatic_scaling:
   target_cpu_utilization: 0.6
